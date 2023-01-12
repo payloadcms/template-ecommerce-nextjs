@@ -11,7 +11,10 @@
 }
 
 .nav {
-  a {
+  display: flex;
+  align-items: center;
+
+  > * {
     text-decoration: none;
     margin-left: var(--base);
   }

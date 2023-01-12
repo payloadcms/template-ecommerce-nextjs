@@ -26,7 +26,8 @@ export const Button: React.FC<Props> = ({
   newTab,
   href,
   appearance,
-  className: classNameFromProps
+  className: classNameFromProps,
+  onClick
 }) => {
   const backgroundColor = useBackgroundColor();
   const newTabProps = newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {};
@@ -37,6 +38,7 @@ export const Button: React.FC<Props> = ({
     ...newTabProps,
     href,
     className,
+    onClick
   }
 
   if (el !== 'link') delete elementProps.className;

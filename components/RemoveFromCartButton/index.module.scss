@@ -1,0 +1,22 @@
+.cartLink {
+  cursor: pointer;
+  position: relative;
+}
+
+.indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate3d(-100%, -100%, 0);
+  background-color: red;
+  width: 8px;
+  height: 8px;
+  border-radius: 100%;
+}
+
+
+.stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1px;
+}

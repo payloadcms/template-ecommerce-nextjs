@@ -140,12 +140,21 @@ export interface Page {
         mediaBlockBackgroundColor?: 'white' | 'black';
         position?: 'default' | 'fullscreen';
         media: string | Media;
-        caption?: {
-          [k: string]: unknown;
-        }[];
         id?: string;
         blockName?: string;
         blockType: 'mediaBlock';
+      }
+    | {
+        introContent: {
+          [k: string]: unknown;
+        }[];
+        populateBy?: 'collection' | 'selection';
+        relationTo?: 'products';
+        categories?: string[] | Category[];
+        selection?: string[] | Product[];
+        id?: string;
+        blockName?: string;
+        blockType: 'archive';
       }
   )[];
   slug?: string;
@@ -165,6 +174,9 @@ export interface Page {
 export interface Media {
   id: string;
   alt: string;
+  caption?: {
+    [k: string]: unknown;
+  }[];
   url?: string;
   filename?: string;
   mimeType?: string;
@@ -176,55 +188,18 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer".
+ * via the `definition` "categories".
  */
-export interface Footer {
-  id: string;
-  navItems: {
-    link: {
-      type?: 'reference' | 'custom';
-      newTab?: boolean;
-      reference: {
-        value: string | Page;
-        relationTo: 'pages';
-      };
-      url: string;
-      label: string;
-    };
-    id?: string;
-  }[];
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
+export interface Category {
   id: string;
   name?: string;
-  roles?: ('admin' | 'customer')[];
-  stripeCustomerID?: string;
-  cart: {
-    product?: string | Product;
-    quantity?: number;
+  parent?: string | Category;
+  breadcrumbs: {
+    doc?: string | Category;
+    url?: string;
+    label?: string;
     id?: string;
   }[];
-  cartCreatedOn?: string;
-  cartLastModified?: string;
-  subscriptions: {
-    stripeSubscriptionID?: string;
-    stripeProductID?: string;
-    product?: string | Product;
-    status?: 'active' | 'canceled' | 'incomplete' | 'incomplete_expired' | 'past_due' | 'trialing' | 'unpaid';
-    createdOn?: string;
-    lastModified?: string;
-    id?: string;
-  }[];
-  skipSync?: boolean;
-  email?: string;
-  resetPasswordToken?: string;
-  resetPasswordExpiration?: string;
-  loginAttempts?: number;
-  lockUntil?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -343,12 +318,21 @@ export interface Product {
         mediaBlockBackgroundColor?: 'white' | 'black';
         position?: 'default' | 'fullscreen';
         media: string | Media;
-        caption?: {
-          [k: string]: unknown;
-        }[];
         id?: string;
         blockName?: string;
         blockType: 'mediaBlock';
+      }
+    | {
+        introContent: {
+          [k: string]: unknown;
+        }[];
+        populateBy?: 'collection' | 'selection';
+        relationTo?: 'products';
+        categories?: string[] | Category[];
+        selection?: string[] | Product[];
+        id?: string;
+        blockName?: string;
+        blockType: 'archive';
       }
   )[];
   stripeProductID?: string;
@@ -364,23 +348,63 @@ export interface Product {
     description?: string;
     image?: string | Media;
   };
+  _status?: 'draft' | 'published';
   createdAt: string;
   updatedAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
+ * via the `definition` "footer".
  */
-export interface Category {
+export interface Footer {
   id: string;
-  name?: string;
-  parent?: string | Category;
-  breadcrumbs: {
-    doc?: string | Category;
-    url?: string;
-    label?: string;
+  navItems: {
+    link: {
+      type?: 'reference' | 'custom';
+      newTab?: boolean;
+      reference: {
+        value: string | Page;
+        relationTo: 'pages';
+      };
+      url: string;
+      label: string;
+    };
     id?: string;
   }[];
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: string;
+  name?: string;
+  roles?: ('admin' | 'customer')[];
+  stripeCustomerID?: string;
+  cart: {
+    items: {
+      product?: string | Product;
+      quantity?: number;
+      id?: string;
+    }[];
+    createdOn?: string;
+    lastModified?: string;
+  };
+  subscriptions: {
+    stripeSubscriptionID?: string;
+    stripeProductID?: string;
+    product?: string | Product;
+    status?: 'active' | 'canceled' | 'incomplete' | 'incomplete_expired' | 'past_due' | 'trialing' | 'unpaid';
+    createdOn?: string;
+    lastModified?: string;
+    id?: string;
+  }[];
+  skipSync?: boolean;
+  email?: string;
+  resetPasswordToken?: string;
+  resetPasswordExpiration?: string;
+  loginAttempts?: number;
+  lockUntil?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -396,12 +420,14 @@ export interface Order {
     roles?: ('admin' | 'customer')[];
     stripeCustomerID?: string;
     cart: {
-      product?: string | Product;
-      quantity?: number;
-      id?: string;
-    }[];
-    cartCreatedOn?: string;
-    cartLastModified?: string;
+      items: {
+        product?: string | Product;
+        quantity?: number;
+        id?: string;
+      }[];
+      createdOn?: string;
+      lastModified?: string;
+    };
     subscriptions: {
       stripeSubscriptionID?: string;
       stripeProductID?: string;
@@ -524,12 +550,21 @@ export interface Order {
           mediaBlockBackgroundColor?: 'white' | 'black';
           position?: 'default' | 'fullscreen';
           media: string | Media;
-          caption?: {
-            [k: string]: unknown;
-          }[];
           id?: string;
           blockName?: string;
           blockType: 'mediaBlock';
+        }
+      | {
+          introContent: {
+            [k: string]: unknown;
+          }[];
+          populateBy?: 'collection' | 'selection';
+          relationTo?: 'products';
+          categories?: string[] | Category[];
+          selection?: string[] | Product[];
+          id?: string;
+          blockName?: string;
+          blockType: 'archive';
         }
     )[];
     stripeProductID?: string;

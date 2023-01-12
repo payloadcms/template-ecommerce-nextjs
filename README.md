@@ -1,9 +1,13 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) that fetches data from [Payload CMS](https://payloadcms.com) using [GraphQL](https://graphql.org).
 
-This repo is was made explicitly for Payload's [E-Commerce Boilerplate](https://github.com/payloadcms/ecommerce-example-cms) and takes queues from:
+This repo is was made explicitly for Payload's [E-Commerce Boilerplate](https://github.com/payloadcms/ecommerce-example-cms).
 
-- [Payload+Next.js Auth Frontend Boilerplate](https://github.com/payloadcms/next-auth-frontend) - Payload's demo of how to authenticate Next.js apps
-- [Payload Admin Bar](https://github.com/payloadcms/payload-admin-bar) - A React component used to easily navigate to and from Payload
+Key features:
+
+- Next.js, GraphQL, TypeScript
+- Complete authentication workflow
+- Complete shopping experience
+- Stripe integration
 
 ## Getting Started
 
@@ -44,6 +48,8 @@ To learn more about PayloadCMS and Next.js, take a look at the following resourc
 - [Payload GraphQL Documentation](https://payloadcms.com/docs/graphql/overview) - Payload's GraphQL documentation.
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Payload+Next.js Auth Frontend Boilerplate](https://github.com/payloadcms/next-auth-frontend) - Payload's demo of how to authenticate Next.js apps
+- [Payload Admin Bar](https://github.com/payloadcms/payload-admin-bar) - A React component used to easily navigate to and from Payload
 
 You can check out [the Payload CMS GitHub repository](https://github.com/payloadcms/payload/) as well as [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 

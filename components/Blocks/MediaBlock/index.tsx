@@ -1,21 +1,22 @@
 import React from 'react';
 import { Gutter } from '../../Gutter';
 import { Media } from '../../Media';
-import { Media as MediaType } from '../../../payload-types';
+import { Media as MediaType, Page } from '../../../payload-types';
 import RichText from '../../RichText';
 import classes from './index.module.scss';
 
-export const MediaBlock: React.FC<{
-  media?: MediaType
-  caption?: string
-  position?: 'default' | 'fullscreen'
-  mediaBackgroundColor?: string
+type Props = Extract<Page['layout'][0], { blockType: 'mediaBlock' }>
+
+export const MediaBlock: React.FC<Props & {
+  id?: string
 }> = (props) => {
   const {
     media,
-    caption,
     position = 'default',
   } = props;
+
+  let caption;
+  if (media && typeof media === 'object') caption = media.caption;
 
   return (
     <div className={classes.mediaBlock}>

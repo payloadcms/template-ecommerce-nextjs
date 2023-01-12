@@ -1,0 +1,32 @@
+@import '../../css/common';
+
+.title {
+  margin: 0;
+}
+
+.centerAlign {
+  align-items: center;
+}
+
+.body {
+  margin-top: base(0.5);
+}
+
+.leader {
+  display: flex;
+  margin-bottom: base(0.25);
+
+  & > *:not(:last-child) {
+    margin-right: base(0.25);
+  }
+}
+
+.description {
+  margin: 0 0 base(0.5) 0;
+}
+
+.hideImageOnMobile {
+  @include mid-break {
+    display: none;
+  }
+}

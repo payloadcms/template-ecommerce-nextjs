@@ -82,7 +82,9 @@ const Columns: React.FC<Props> = ({
   }
 }
 
-export const ContentBlock: React.FC<Props> = (props) => {
+export const ContentBlock: React.FC<Props & {
+  id?: string
+}> = (props) => {
   return (
     <Gutter className={classes.mediaBlock}>
       <Grid>

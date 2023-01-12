@@ -7,7 +7,7 @@ import { Media as MediaType } from '../../payload-types';
 export type Props = {
   src?: StaticImageData // for static media
   alt?: string
-  resource?: MediaType // for Payload media
+  resource?: string | MediaType // for Payload media
   size?: string // for NextImage only
   priority?: boolean // for NextImage only
   fill?: boolean // for NextImage only

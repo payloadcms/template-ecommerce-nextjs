@@ -45,7 +45,21 @@ export const MEDIA_BLOCK = `
     width
     height
     alt
+    caption
   }
-  caption
+}
+`
+
+export const ARCHIVE_BLOCK = `
+...on Archive {
+  blockType
+  populateBy
+  relationTo
+  categories {
+    id
+  }
+  selection {
+    id
+  }
 }
 `

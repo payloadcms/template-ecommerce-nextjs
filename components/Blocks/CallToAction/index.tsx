@@ -8,29 +8,11 @@ import RichText from '../../RichText';
 
 import classes from './index.module.scss';
 
-type Props = {
-  ctaBackgroundColor?: 'white' | 'black';
-  richText: {
-    [k: string]: unknown;
-  }[];
-  links: {
-    link: {
-      type?: 'reference' | 'custom';
-      newTab?: boolean;
-      reference: {
-        value: string | Page;
-        relationTo: 'pages';
-      };
-      url: string;
-      label: string;
-    };
-    id?: string;
-  }[];
-  id?: string;
-  blockName?: string;
-  blockType: 'cta';
-}
-export const CallToActionBlock: React.FC<Props> = ({ ctaBackgroundColor, links, richText }) => {
+type Props = Extract<Page['layout'][0], { blockType: 'cta' }>
+
+export const CallToActionBlock: React.FC<Props & {
+  id?: string
+}> = ({ ctaBackgroundColor, links, richText }) => {
   const oppositeBackgroundColor = ctaBackgroundColor === 'white' ? 'black' : 'white';
 
   return (

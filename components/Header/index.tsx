@@ -7,9 +7,9 @@ import { MenuIcon } from '../icons/Menu';
 import { CMSLink } from '../Link';
 import { Logo } from '../Logo';
 import { MobileMenuModal, slug as menuModalSlug } from './MobileMenuModal';
-
-import classes from './index.module.scss';
 import { useAuth } from '../../providers/Auth';
+import { CartLink } from '../CartLink';
+import classes from './index.module.scss';
 
 type HeaderBarProps = {
   children?: React.ReactNode;
@@ -48,23 +48,24 @@ export const Header: React.FC<{ header: HeaderType }> = ({ header }) => {
           {user && (
             <React.Fragment>
               <Link href="/account">
-                <a>Account</a>
+                Account
               </Link>
               <Link href="/logout">
-                <a>Logout</a>
+                Logout
               </Link>
             </React.Fragment>
           )}
           {!user && (
             <React.Fragment>
               <Link href="/login">
-                <a>Login</a>
+                Login
               </Link>
               <Link href="/create-account">
-                <a>Create Account</a>
+                Create Account
               </Link>
             </React.Fragment>
           )}
+          <CartLink />
         </nav>
       </HeaderBar>
       <MobileMenuModal navItems={navItems} />

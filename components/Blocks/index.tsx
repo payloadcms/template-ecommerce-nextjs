@@ -3,6 +3,7 @@ import { Page } from '../../payload-types';
 import { toKebabCase } from '../../utilities/toKebabCase';
 import { BackgroundColor } from '../BackgroundColor';
 import { VerticalPaddingOptions } from '../VerticalPadding';
+import { ArchiveBlock } from './ArchiveBlock';
 import { CallToActionBlock } from './CallToAction';
 import { ContentBlock } from './Content';
 import { MediaBlock } from './MediaBlock';
@@ -10,7 +11,8 @@ import { MediaBlock } from './MediaBlock';
 const blockComponents = {
   cta: CallToActionBlock,
   content: ContentBlock,
-  mediaBlock: MediaBlock
+  mediaBlock: MediaBlock,
+  archive: ArchiveBlock
 }
 
 const Blocks: React.FC<{
@@ -59,8 +61,8 @@ const Blocks: React.FC<{
                   paddingBottom={paddingBottom}
                   color={backgroundColor}
                 >
-                  {/*@ts-ignore*/}
                   <Block
+                    // @ts-ignore
                     id={toKebabCase(blockName)}
                     {...block}
                   />

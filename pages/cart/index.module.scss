@@ -1,0 +1,17 @@
+.items {
+
+}
+
+.row {
+  &:not(:last-child) {
+    margin-bottom: var(--base);
+  }
+}
+
+.image {
+  width: 200px;
+}
+
+.title {
+  margin: 0;
+}

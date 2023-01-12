@@ -1,5 +1,5 @@
 import { Cell, Grid } from '@faceless-ui/css-grid';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Page } from '../../../payload-types';
 import { Gutter } from '../../Gutter';
 import { CMSLink } from '../../Link';
@@ -9,7 +9,6 @@ import RichText from '../../RichText';
 import classes from './index.module.scss';
 
 export const HighImpactHero: React.FC<Page['hero']> = ({ richText, media, links }) => {
-
   return (
     <Gutter className={classes.hero}>
       <Grid>
@@ -18,7 +17,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ richText, media, links 
         </Cell>
       </Grid>
       <div className={classes.media}>
-        {Array.isArray(links) && (
+        {Array.isArray(links) && links.length > 0 && (
           <ul className={classes.links}>
             {links.map(({ link }, i) => {
               return (
@@ -30,7 +29,15 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ richText, media, links 
           </ul>
         )}
         {typeof media === 'object' && (
-          <Media resource={media} />
+          <Fragment>
+            <Media resource={media} />
+            {media?.caption && (
+              <RichText
+                content={media.caption}
+                className={classes.caption}
+              />
+            )}
+          </Fragment>
         )}
       </div>
     </Gutter>
