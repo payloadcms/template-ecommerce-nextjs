@@ -7,8 +7,8 @@ import { Product } from '../../payload-types';
 import { Gutter } from '../Gutter';
 import { PageRange } from '../PageRange';
 import { Card } from '../Card';
+import { ArchiveBlockProps } from '../../blocks/ArchiveBlock';
 
-const perPage = 10;
 const minLoadingTime = 1000; // require at least 1 second to load to give time for the scroll to finish
 
 type Result = {
@@ -28,10 +28,10 @@ export type Props = {
   populateBy?: 'collection' | 'selection'
   showPageRange?: boolean
   onResultChange?: (result: Result) => void // eslint-disable-line no-unused-vars
-  showControls?: boolean
   sort?: string
-  showDates?: boolean
-  showCategories?: boolean
+  limit?: number
+  populatedDocs?: ArchiveBlockProps['populatedDocs']
+  populatedDocsTotal?: ArchiveBlockProps['populatedDocsTotal']
 }
 
 export const CollectionArchive: React.FC<Props> = (props) => {
@@ -41,14 +41,14 @@ export const CollectionArchive: React.FC<Props> = (props) => {
     showPageRange,
     onResultChange,
     sort = '-createdAt',
-    showControls,
-    showDates,
-    showCategories,
+    limit = 10,
+    populatedDocs,
+    populatedDocsTotal
   } = props;
 
   const [results, setResults] = useState<Result>({
-    totalDocs: 0,
-    docs: [],
+    totalDocs: typeof populatedDocsTotal === 'number' ? populatedDocsTotal : 0,
+    docs: populatedDocs?.map((doc) => doc.value) || [],
     page: 1,
     totalPages: 1,
     hasPrevPage: false,
@@ -58,15 +58,15 @@ export const CollectionArchive: React.FC<Props> = (props) => {
   });
 
   const {
-    query: {  // contains both router AND search params
-      category, // (router param)
+    // `query` contains both router AND search params
+    query: {
       categories,
       city,
       page
     } = {},
   } = useRouter();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -90,51 +90,49 @@ export const CollectionArchive: React.FC<Props> = (props) => {
   ])
 
   useEffect(() => {
-    setIsLoading(true);
+    // hydrate the block with fresh content after first render
+    // don't show loader unless the request takes longer than x ms
+    let timer: NodeJS.Timeout = setTimeout(() => {
+      setIsLoading(true)
+    }, 500)
 
-    // wait x ms before requesting new data, to give the illusion of load while the scrollTo finishes and to avoid loading flash when on fast networks
-    let timer: NodeJS.Timeout;
-    timer = setTimeout(() => {
-      const searchParams = qs.stringify({
-        sort,
-        where: {
-          ...(categories || category) ? {
-            'categories.slug': {
-              in: [
-                categories,
-                category
-              ].filter(Boolean)
-            },
-          } : {},
-        },
-        limit: perPage,
-        page,
-        depth: 1
-      }, { encode: false })
+    const searchParams = qs.stringify({
+      sort,
+      where: {
+        ...categories ? {
+          categories: {
+            in: typeof categories === 'string' ? [categories] : categories
+          },
+        } : {},
+      },
+      limit,
+      page,
+      depth: 1
+    }, { encode: false })
 
-      const makeRequest = async () => {
-        try {
-          const req = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/${relationTo}?${searchParams}`);
-          const json = await req.json();
+    const makeRequest = async () => {
+      try {
+        const req = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/${relationTo}?${searchParams}`);
+        const json = await req.json();
+        clearTimeout(timer);
 
-          const { docs } = json as { docs: Product[] };
+        const { docs } = json as { docs: Product[] };
 
-          if (docs && Array.isArray(docs)) {
-            setResults(json)
-            setIsLoading(false);
-            if (typeof onResultChange === 'function') {
-              onResultChange(json);
-            }
-          }
-        } catch (err) {
-          console.warn(err);
+        if (docs && Array.isArray(docs)) {
+          setResults(json)
           setIsLoading(false);
-          setError(`Unable to load "${relationTo} archive" data at this time.`);
+          if (typeof onResultChange === 'function') {
+            onResultChange(json);
+          }
         }
+      } catch (err) {
+        console.warn(err);
+        setIsLoading(false);
+        setError(`Unable to load "${relationTo} archive" data at this time.`);
       }
+    }
 
-      makeRequest();
-    }, minLoadingTime);
+    makeRequest();
 
     return () => {
       if (timer) clearTimeout(timer);
@@ -146,7 +144,7 @@ export const CollectionArchive: React.FC<Props> = (props) => {
     relationTo,
     onResultChange,
     sort,
-    category
+    limit
   ]);
 
   return (
@@ -160,7 +158,6 @@ export const CollectionArchive: React.FC<Props> = (props) => {
         ref={scrollRef}
         className={classes.scrollRef}
       />
-      {/* {shs */}
       {isLoading && (
         <Gutter>
           Loading, please wait...
@@ -185,7 +182,7 @@ export const CollectionArchive: React.FC<Props> = (props) => {
                       totalDocs={results.totalDocs}
                       currentPage={results.page}
                       collection={relationTo}
-                      limit={perPage}
+                      limit={limit}
                     />
                   </div>
                 </Cell>

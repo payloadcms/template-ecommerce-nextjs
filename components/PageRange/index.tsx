@@ -49,7 +49,7 @@ export const PageRange: React.FC<{
         classes.pageRange
       ].filter(Boolean).join(' ')}
     >
-      {!totalDocs || totalDocs === 0 && (
+      {typeof totalDocs === 'undefined' || totalDocs === 0 && (
         'Search produced no results'
       )}
       {typeof totalDocs !== 'undefined' && totalDocs > 0 && (

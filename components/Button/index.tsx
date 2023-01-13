@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { ElementType } from 'react';
 import { useBackgroundColor } from '../BackgroundColor';
 import { Chevron } from '../icons/Chevron';
 import classes from './index.module.scss';
@@ -14,12 +14,6 @@ export type Props = {
   className?: string
 }
 
-const elements = {
-  a: 'a',
-  link: Link,
-  button: 'button',
-}
-
 export const Button: React.FC<Props> = ({
   el = 'button',
   label,
@@ -31,17 +25,7 @@ export const Button: React.FC<Props> = ({
 }) => {
   const backgroundColor = useBackgroundColor();
   const newTabProps = newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {};
-  const Element = elements[el];
   const className = [classNameFromProps, classes[`appearance--${appearance}`], classes[`${appearance}--${backgroundColor}`], classes.button].filter(Boolean).join(' ');
-
-  const elementProps = {
-    ...newTabProps,
-    href,
-    className,
-    onClick
-  }
-
-  if (el !== 'link') delete elementProps.className;
 
   const content = (
     <div className={classes.content}>
@@ -52,20 +36,29 @@ export const Button: React.FC<Props> = ({
     </div>
   )
 
+  if (el === 'link') {
+    return (
+      <Link
+        href={href}
+        className={className}
+        {...newTabProps}
+        onClick={onClick}
+      >
+        {content}
+      </Link>
+    )
+  }
+
+  const Element: ElementType = el;
+
   return (
-    <Element {...elementProps}>
-      <React.Fragment>
-        {el === 'link' && (
-          <a {...newTabProps} href={href} className={elementProps.className}>
-            {content}
-          </a>
-        )}
-        {el !== 'link' && (
-          <React.Fragment>
-            {content}
-          </React.Fragment>
-        )}
-      </React.Fragment>
+    <Element
+      href={href}
+      className={className}
+      {...newTabProps}
+      onClick={onClick}
+    >
+      {content}
     </Element>
   )
 }

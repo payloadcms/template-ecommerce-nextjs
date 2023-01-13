@@ -1,10 +1,10 @@
 import React from 'react';
 import { Cell, Grid } from '@faceless-ui/css-grid';
-import { Page } from '../../../payload-types';
-import { BackgroundColor } from '../../BackgroundColor';
-import { Gutter } from '../../Gutter';
-import { CMSLink } from '../../Link';
-import RichText from '../../RichText';
+import { Page } from '../../payload-types';
+import { BackgroundColor } from '../../components/BackgroundColor';
+import { Gutter } from '../../components/Gutter';
+import { CMSLink } from '../../components/Link';
+import RichText from '../../components/RichText';
 
 import classes from './index.module.scss';
 

@@ -26,7 +26,8 @@ export const RemoveFromCartButton: React.FC<{
   }
 
   return (
-    <Button
+    <button
+      type="button"
       onClick={() => {
         deleteItemFromCart(product)
       }}
@@ -34,7 +35,8 @@ export const RemoveFromCartButton: React.FC<{
         className,
         classes.removeFromCartButton
       ].filter(Boolean).join(' ')}
-      label="Remove from cart"
-    />
+    >
+      Remove from cart
+    </button>
   );
 };

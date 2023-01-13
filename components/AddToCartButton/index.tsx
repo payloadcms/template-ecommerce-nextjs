@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CartItem, useCart } from '../../providers/Cart';
 import { Button } from '../Button';
 import classes from './index.module.scss';
@@ -15,9 +15,13 @@ export const AddToCartButton: React.FC<{
 
   const { addItemToCart, isProductInCart } = useCart();
 
-  const productIsInCart = isProductInCart(item.product);
+  const [showInCart, setShowInCart] = useState<boolean>();
 
-  if (productIsInCart) {
+  useEffect(() => {
+    setShowInCart(isProductInCart(item.product))
+  }, [isProductInCart, item])
+
+  if (showInCart) {
     return (
       <Link href="/cart">
         View in cart

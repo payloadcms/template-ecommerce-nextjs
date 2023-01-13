@@ -1,7 +1,7 @@
 import React, { ElementType, Fragment, Ref } from 'react';
 import { Video } from './Video';
 import { Image } from './Image';
-import { StaticImageData } from 'next/future/image';
+import { StaticImageData } from 'next/image';
 import { Media as MediaType } from '../../payload-types';
 
 export type Props = {

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Gutter } from '../../Gutter';
-import { Media } from '../../Media';
-import { Media as MediaType, Page } from '../../../payload-types';
-import RichText from '../../RichText';
+import { Gutter } from '../../components/Gutter';
+import { Media } from '../../components/Media';
+import { Page } from '../../payload-types';
+import RichText from '../../components/RichText';
 import classes from './index.module.scss';
 
 type Props = Extract<Page['layout'][0], { blockType: 'mediaBlock' }>

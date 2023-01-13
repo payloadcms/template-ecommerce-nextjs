@@ -1,4 +1,6 @@
 import { LINK_FIELDS } from "./link";
+import { MEDIA } from "./media";
+import { META } from "./meta";
 
 export const CALL_TO_ACTION = `
 ...on Cta {
@@ -39,14 +41,7 @@ export const MEDIA_BLOCK = `
   blockType
   mediaBlockBackgroundColor
   position
-  media {
-    mimeType
-    filename
-    width
-    height
-    alt
-    caption
-  }
+  ${MEDIA}
 }
 `
 
@@ -58,8 +53,28 @@ export const ARCHIVE_BLOCK = `
   categories {
     id
   }
-  selection {
-    id
+  limit
+  selectedDocs {
+    relationTo
+    value {
+      ...on Product {
+        id
+        slug
+        title
+      }
+    }
   }
+  populatedDocs {
+    relationTo
+    value {
+      ...on Product {
+        id
+        slug
+        title
+        ${META}
+      }
+    }
+  }
+  populatedDocsTotal
 }
 `

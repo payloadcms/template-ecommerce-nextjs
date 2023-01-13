@@ -151,7 +151,26 @@ export interface Page {
         populateBy?: 'collection' | 'selection';
         relationTo?: 'products';
         categories?: string[] | Category[];
-        selection?: string[] | Product[];
+        limit?: number;
+        selectedDocs?:
+          | {
+              value: string;
+              relationTo: 'products';
+            }[]
+          | {
+              value: Product;
+              relationTo: 'products';
+            }[];
+        populatedDocs?:
+          | {
+              value: string;
+              relationTo: 'products';
+            }[]
+          | {
+              value: Product;
+              relationTo: 'products';
+            }[];
+        populatedDocsTotal?: number;
         id?: string;
         blockName?: string;
         blockType: 'archive';
@@ -192,7 +211,7 @@ export interface Media {
  */
 export interface Category {
   id: string;
-  name?: string;
+  title?: string;
   parent?: string | Category;
   breadcrumbs: {
     doc?: string | Category;
@@ -329,7 +348,26 @@ export interface Product {
         populateBy?: 'collection' | 'selection';
         relationTo?: 'products';
         categories?: string[] | Category[];
-        selection?: string[] | Product[];
+        limit?: number;
+        selectedDocs?:
+          | {
+              value: string;
+              relationTo: 'products';
+            }[]
+          | {
+              value: Product;
+              relationTo: 'products';
+            }[];
+        populatedDocs?:
+          | {
+              value: string;
+              relationTo: 'products';
+            }[]
+          | {
+              value: Product;
+              relationTo: 'products';
+            }[];
+        populatedDocsTotal?: number;
         id?: string;
         blockName?: string;
         blockType: 'archive';
@@ -561,7 +599,26 @@ export interface Order {
           populateBy?: 'collection' | 'selection';
           relationTo?: 'products';
           categories?: string[] | Category[];
-          selection?: string[] | Product[];
+          limit?: number;
+          selectedDocs?:
+            | {
+                value: string;
+                relationTo: 'products';
+              }[]
+            | {
+                value: Product;
+                relationTo: 'products';
+              }[];
+          populatedDocs?:
+            | {
+                value: string;
+                relationTo: 'products';
+              }[]
+            | {
+                value: Product;
+                relationTo: 'products';
+              }[];
+          populatedDocsTotal?: number;
           id?: string;
           blockName?: string;
           blockType: 'archive';

@@ -71,9 +71,7 @@ const CreateAccount: React.FC = () => {
           <h1>Account created successfully</h1>
           <p>You are now logged in.</p>
           <Link href="/account">
-            <a>
-              Go to your account
-            </a>
+            Go to your account
           </Link>
         </React.Fragment>
       )}

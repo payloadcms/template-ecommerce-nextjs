@@ -7,6 +7,7 @@ import classes from './index.module.scss';
 import { useCart } from '../../providers/Cart';
 import { Media } from '../../components/Media';
 import { RemoveFromCartButton } from '../../components/RemoveFromCartButton';
+import Link from 'next/link';
 
 const Cart: React.FC = () => {
   const { cart, cartIsEmpty, addItemToCart } = useCart();
@@ -30,6 +31,9 @@ const Cart: React.FC = () => {
       {cartIsEmpty && (
         <div>
           Your cart is empty
+          <Link href="/shop">
+            Shop now
+          </Link>
         </div>
       )}
       {!cartIsEmpty && (
@@ -82,7 +86,9 @@ const Cart: React.FC = () => {
                     }}
                   />
                 </label>
-                <RemoveFromCartButton product={product} />
+                <div>
+                  <RemoveFromCartButton product={product} />
+                </div>
               </div>
             )
           })}

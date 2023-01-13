@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useCart } from '../../providers/Cart';
 import classes from './index.module.scss';
 
@@ -22,14 +22,14 @@ export const CartLink: React.FC<{
       ].filter(Boolean).join(' ')}
       href="/cart"
     >
-      <a>
+      <Fragment>
         Cart
         {length > 0 && (
           <small className={classes.quantity}>
             ({length})
           </small>
         )}
-      </a>
+      </Fragment>
     </Link>
   );
 };

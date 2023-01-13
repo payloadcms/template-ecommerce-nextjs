@@ -53,11 +53,11 @@ const Login: React.FC = () => {
         <input type="submit" />
       </form>
       <Link href="/create-account">
-        <a>Create an account</a>
+        Create an account
       </Link>
       <br />
       <Link href="/recover-password">
-        <a>Recover your password</a>
+        Recover your password
       </Link>
     </Gutter>
   );

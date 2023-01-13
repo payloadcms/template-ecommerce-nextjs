@@ -90,7 +90,7 @@ const Account: React.FC = () => {
         <button type="submit">Update account</button>
       </form>
       <Link href="/logout">
-        <a>Log out</a>
+        Log out
       </Link>
     </Gutter>
   );

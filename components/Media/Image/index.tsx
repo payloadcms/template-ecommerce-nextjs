@@ -1,5 +1,5 @@
 import React from 'react';
-import NextImage, { StaticImageData } from 'next/future/image';
+import NextImage, { StaticImageData } from 'next/image';
 import classes from './index.module.scss'
 import cssVariables from '../../../cssVariables';
 import { Props } from '..';
