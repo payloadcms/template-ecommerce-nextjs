@@ -1,3 +1,4 @@
+import { gql } from '@apollo/client';
 import { LINK_FIELDS } from './link';
 
 export const HEADER = `
@@ -8,6 +9,12 @@ export const HEADER = `
   }
 `;
 
+export const HEADER_QUERY = gql`
+query Header {
+  ${HEADER}
+}
+`
+
 export const FOOTER = `
   Header {
     navItems {
@@ -16,3 +23,8 @@ export const FOOTER = `
   }
 `;
 
+export const FOOTER_QUERY = gql`
+query Header {
+  ${FOOTER}
+}
+`

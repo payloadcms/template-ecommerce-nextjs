@@ -34,7 +34,7 @@ export interface Page {
   id: string;
   title: string;
   hero: {
-    type: 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText: {
       [k: string]: unknown;
     }[];
@@ -231,7 +231,7 @@ export interface Product {
   title: string;
   description?: string;
   hero: {
-    type: 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText: {
       [k: string]: unknown;
     }[];
@@ -482,7 +482,7 @@ export interface Order {
     title: string;
     description?: string;
     hero: {
-      type: 'highImpact' | 'mediumImpact' | 'lowImpact';
+      type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
       richText: {
         [k: string]: unknown;
       }[];

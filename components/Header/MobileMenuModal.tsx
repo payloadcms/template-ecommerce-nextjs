@@ -1,13 +1,13 @@
 import { Modal } from "@faceless-ui/modal";
 import { HeaderBar } from ".";
-import { MainMenu } from "../../payload-types"
+import { Header } from "../../payload-types"
 import { Gutter } from "../Gutter";
 import { CMSLink } from "../Link";
 
 import classes from './mobileMenuModal.module.scss';
 
 type Props = {
-  navItems: MainMenu['navItems'];
+  navItems: Header['navItems'];
 }
 
 export const slug = 'menu-modal';

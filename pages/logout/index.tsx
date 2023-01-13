@@ -1,9 +1,8 @@
 import { GetStaticProps } from "next";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Gutter } from "../../components/Gutter";
 import { getApolloClient } from "../../graphql";
-import { QUERY_HEADER } from "../../graphql/header";
+import { HEADER_QUERY } from "../../graphql/globals";
 import { useAuth } from "../../providers/Auth";
 import classes from './index.module.css';
 
@@ -43,7 +42,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = getApolloClient();
 
   const { data } = await apolloClient.query({
-    query: QUERY_HEADER
+    query: HEADER_QUERY
   });
 
   return {

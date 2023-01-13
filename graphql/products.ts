@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import { ARCHIVE_BLOCK, CALL_TO_ACTION, CONTENT, MEDIA_BLOCK } from "./blocks";
+import { CATEGORIES } from "./categories";
 import { HEADER, FOOTER } from "./globals";
 import { LINK_FIELDS } from "./link";
 import { MEDIA } from "./media";
@@ -20,9 +21,6 @@ export const PRODUCT = gql`
     Products(where: { slug: { equals: $slug}}) {
       docs {
         title
-        categories {
-          title
-        }
         hero {
           type
           richText
@@ -31,6 +29,7 @@ export const PRODUCT = gql`
           }
           ${MEDIA}
         }
+        ${CATEGORIES}
         layout {
           ${CALL_TO_ACTION}
           ${CONTENT}

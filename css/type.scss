@@ -15,83 +15,54 @@
 
 %h1 {
   margin: 50px 0;
-  font-size: 84px;
-  line-height: 1;
+  font-size: 64px;
+  line-height: 70px;
 
   @include mid-break {
-    font-size: 70px;
-  }
-
-  @include small-break {
-    margin: 24px 0;
-    font-size: 36px;
-    line-height: 42px;
+    font-size: 48px;
+    line-height: 54px;
   }
 }
 
 %h2 {
   margin: 32px 0;
-  font-size: 56px;
-  line-height: 1;
+  font-size: 48px;
+  line-height: 54px;
 
   @include mid-break {
-    margin: 36px 0;
-    font-size: 48px;
-  }
-
-  @include small-break {
-    margin: 24px 0;
-    font-size: 28px;
-    line-height: 32px;
+    font-size: 32px;
+    line-height: 40px;
   }
 }
 
 %h3 {
   margin: 28px 0;
-  font-size: 48px;
-  line-height: 56px;
-
-  @include mid-break {
-    font-size: 40px;
-    line-height: 48px;
-  }
-
-  @include small-break {
-    margin: 24px 0;
-    font-size: 24px;
-    line-height: 30px;
-  }
-}
-
-%h4 {
-  margin: 24px 0;
-  font-size: 40px;
-  line-height: 48px;
-
-  @include mid-break {
-    font-size: 33px;
-    line-height: 36px;
-  }
-
-  @include small-break {
-    margin: 20px 0;
-    font-size: 20px;
-    line-height: 24px;
-  }
-}
-
-%h5 {
-  margin: 20px 0;
   font-size: 32px;
-  line-height: 42px;
+  line-height: 40px;
 
   @include mid-break {
     font-size: 26px;
     line-height: 32px;
   }
+}
 
-  @include small-break {
-    margin: 16px 0;
+%h4 {
+  margin: 24px 0;
+  font-size: 26px;
+  line-height: 32px;
+
+  @include mid-break {
+    font-size: 22px;
+    line-height: 30px;
+  }
+}
+
+%h5 {
+  margin: 20px 0;
+  font-size: 22px;
+  line-height: 30px;
+
+  @include mid-break {
     font-size: 18px;
     line-height: 24px;
   }
@@ -105,12 +76,6 @@
   @include mid-break {
     font-size: 20px;
     line-height: 30px;
-  }
-
-  @include small-break {
-    margin: 16px 0;
-    font-size: 16px;
-    line-height: 22px;
   }
 }
 

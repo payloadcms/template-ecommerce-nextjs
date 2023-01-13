@@ -53,6 +53,10 @@ const Blocks: React.FC<{
               paddingBottom = 'medium';
             }
 
+            if (index === 0) {
+              paddingTop = 'none';
+            }
+
             if (Block) {
               return (
                 <BackgroundColor

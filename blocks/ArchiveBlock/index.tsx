@@ -19,7 +19,8 @@ export const ArchiveBlock: React.FC<ArchiveBlockProps & {
     populateBy,
     limit,
     populatedDocs,
-    populatedDocsTotal
+    populatedDocsTotal,
+    categories
   } = props;
 
   return (
@@ -44,6 +45,7 @@ export const ArchiveBlock: React.FC<ArchiveBlockProps & {
         relationTo={relationTo}
         populatedDocs={populatedDocs}
         populatedDocsTotal={populatedDocsTotal}
+        categories={categories}
         limit={limit}
         sort="-publishedDate"
       />

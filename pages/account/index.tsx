@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { Gutter } from '../../components/Gutter';
 import { GetStaticProps } from 'next';
 import { getApolloClient } from '../../graphql';
-import { QUERY_HEADER } from '../../graphql/header';
+import { HEADER_QUERY } from '../../graphql/globals';
 
 type FormData = {
   email: string;
@@ -100,7 +100,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = getApolloClient();
 
   const { data } = await apolloClient.query({
-    query: QUERY_HEADER
+    query: HEADER_QUERY
   });
 
   return {

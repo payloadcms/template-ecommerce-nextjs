@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { CartItem, useCart } from '../../providers/Cart';
-import { Button } from '../Button';
 import classes from './index.module.scss';
 
 export const AddToCartButton: React.FC<{
@@ -13,13 +12,13 @@ export const AddToCartButton: React.FC<{
     item
   } = props;
 
-  const { addItemToCart, isProductInCart } = useCart();
+  const { cart, addItemToCart, isProductInCart } = useCart();
 
   const [showInCart, setShowInCart] = useState<boolean>();
 
   useEffect(() => {
     setShowInCart(isProductInCart(item.product))
-  }, [isProductInCart, item])
+  }, [isProductInCart, item, cart])
 
   if (showInCart) {
     return (
@@ -30,7 +29,8 @@ export const AddToCartButton: React.FC<{
   }
 
   return (
-    <Button
+    <button
+      type="button"
       onClick={() => {
         addItemToCart(item)
       }}
@@ -38,7 +38,8 @@ export const AddToCartButton: React.FC<{
         className,
         classes.addToCartButton
       ].filter(Boolean).join(' ')}
-      label="Add to cart"
-    />
+    >
+      Add to cart
+    </button>
   );
 };

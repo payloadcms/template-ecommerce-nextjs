@@ -9,8 +9,6 @@ import { PageRange } from '../PageRange';
 import { Card } from '../Card';
 import { ArchiveBlockProps } from '../../blocks/ArchiveBlock';
 
-const minLoadingTime = 1000; // require at least 1 second to load to give time for the scroll to finish
-
 type Result = {
   totalDocs: number
   docs: (Product)[]
@@ -32,6 +30,7 @@ export type Props = {
   limit?: number
   populatedDocs?: ArchiveBlockProps['populatedDocs']
   populatedDocsTotal?: ArchiveBlockProps['populatedDocsTotal']
+  categories?: ArchiveBlockProps['categories']
 }
 
 export const CollectionArchive: React.FC<Props> = (props) => {
@@ -43,7 +42,8 @@ export const CollectionArchive: React.FC<Props> = (props) => {
     sort = '-createdAt',
     limit = 10,
     populatedDocs,
-    populatedDocsTotal
+    populatedDocsTotal,
+    categories: catsFromProps
   } = props;
 
   const [results, setResults] = useState<Result>({
@@ -60,8 +60,7 @@ export const CollectionArchive: React.FC<Props> = (props) => {
   const {
     // `query` contains both router AND search params
     query: {
-      categories,
-      city,
+      categories: catsFromQuery,
       page
     } = {},
   } = useRouter();
@@ -69,6 +68,7 @@ export const CollectionArchive: React.FC<Props> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const hasHydrated = useRef(false);
 
   const scrollToRef = useCallback(() => {
     const { current } = scrollRef;
@@ -92,16 +92,24 @@ export const CollectionArchive: React.FC<Props> = (props) => {
   useEffect(() => {
     // hydrate the block with fresh content after first render
     // don't show loader unless the request takes longer than x ms
+    // and don't show it during initial hydration
     let timer: NodeJS.Timeout = setTimeout(() => {
-      setIsLoading(true)
+      if (hasHydrated) {
+        setIsLoading(true)
+      }
     }, 500)
 
     const searchParams = qs.stringify({
       sort,
       where: {
-        ...categories ? {
+        ...catsFromProps?.length > 0 ? {
           categories: {
-            in: typeof categories === 'string' ? [categories] : categories
+            in: typeof catsFromProps === 'string' ? [catsFromProps] : catsFromProps.map((cat) => cat.id).join(',')
+          },
+        } : {},
+        ...catsFromQuery?.length > 0 ? {
+          categories: {
+            in: typeof catsFromQuery === 'string' ? [catsFromQuery] : catsFromQuery.map((cat) => cat).join(',')
           },
         } : {},
       },
@@ -115,6 +123,7 @@ export const CollectionArchive: React.FC<Props> = (props) => {
         const req = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/${relationTo}?${searchParams}`);
         const json = await req.json();
         clearTimeout(timer);
+        hasHydrated.current = true;
 
         const { docs } = json as { docs: Product[] };
 
@@ -139,8 +148,8 @@ export const CollectionArchive: React.FC<Props> = (props) => {
     }
   }, [
     page,
-    city,
-    categories,
+    catsFromProps,
+    catsFromQuery,
     relationTo,
     onResultChange,
     sort,

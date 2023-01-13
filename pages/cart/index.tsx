@@ -2,12 +2,12 @@ import React, { useCallback } from 'react';
 import { Gutter } from '../../components/Gutter';
 import { GetStaticProps } from 'next';
 import { getApolloClient } from '../../graphql';
-import { QUERY_HEADER } from '../../graphql/header';
 import classes from './index.module.scss';
 import { useCart } from '../../providers/Cart';
 import { Media } from '../../components/Media';
 import { RemoveFromCartButton } from '../../components/RemoveFromCartButton';
 import Link from 'next/link';
+import { HEADER_QUERY } from '../../graphql/globals';
 
 const Cart: React.FC = () => {
   const { cart, cartIsEmpty, addItemToCart } = useCart();
@@ -102,7 +102,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = getApolloClient();
 
   const { data } = await apolloClient.query({
-    query: QUERY_HEADER
+    query: HEADER_QUERY
   });
 
   return {

@@ -45,20 +45,22 @@ export const Card: React.FC<{
         className
       ].filter(Boolean).join(' ')}
     >
-      <Link href={href}>
-        <Fragment>
-          {!metaImage && (
-            <span>
-              No image
-            </span>
-          )}
-          {metaImage && typeof metaImage !== 'string' && (
-            <Media
-              className={classes.media}
-              resource={metaImage}
-            />
-          )}
-        </Fragment>
+      <Link
+        href={href}
+        className={classes.mediaWrapper}
+      >
+        {!metaImage && (
+          <div className={classes.placeholder}>
+            No image
+          </div>
+        )}
+        {metaImage && typeof metaImage !== 'string' && (
+          <Media
+            className={classes.media}
+            resource={metaImage}
+            fill
+          />
+        )}
       </Link>
       {showCategories && hasCategories && (
         <div className={classes.leader}>
@@ -67,7 +69,6 @@ export const Card: React.FC<{
               {categories?.map((category, index) => {
                 const {
                   title: categoryTitle,
-                  slug: categorySlug
                 } = category;
 
                 const titleToUse = categoryTitle || 'Untitled category';
@@ -76,9 +77,7 @@ export const Card: React.FC<{
 
                 return (
                   <Fragment key={index}>
-                    <Link href={`/${relationTo}?categories=${categorySlug}`}>
-                      {titleToUse}
-                    </Link>
+                    {titleToUse}
                     {!isLast && (
                       <Fragment>
                         ,
