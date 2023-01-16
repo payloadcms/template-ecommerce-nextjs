@@ -11,12 +11,11 @@ export const Image: React.FC<Props> = (props) => {
     imgClassName,
     onClick,
     onLoad: onLoadFromProps,
-    size,
     resource,
     priority,
     fill,
     src: srcFromProps,
-    alt: altFromProps
+    alt: altFromProps,
   } = props;
 
   const [isLoading, setIsLoading] = React.useState(true);

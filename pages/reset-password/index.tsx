@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-import classes from './index.module.css';
 import { Input } from '../../components/Input';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../providers/Auth';
 import { Gutter } from '../../components/Gutter';
 import { GetStaticProps } from 'next';
 import { getApolloClient } from '../../graphql';
-import { HEADER_QUERY } from '../../graphql/globals';
+import { FOOTER, HEADER } from '../../graphql/globals';
+import { gql } from '@apollo/client';
+
+import classes from './index.module.scss';
 
 type FormData = {
   password: string
@@ -52,7 +54,7 @@ const ResetPassword: React.FC = () => {
   }, [reset, token]);
 
   return (
-    <Gutter>
+    <Gutter className={classes.resetPassword}>
       <h1>Reset Password</h1>
       <p>Please enter a new password below.</p>
       {error && (
@@ -75,7 +77,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = getApolloClient();
 
   const { data } = await apolloClient.query({
-    query: HEADER_QUERY
+    query: gql(`
+      query {
+        ${HEADER}
+        ${FOOTER}
+      }
+    `)
   });
 
   return {

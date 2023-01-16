@@ -23,7 +23,10 @@ const PageTemplate: React.FC<{
     return (
       <React.Fragment>
         <Hero {...hero} />
-        <Blocks blocks={layout} />
+        <Blocks
+          blocks={layout}
+          disableTopPadding={hero.type === 'none' || hero.type === 'lowImpact'}
+        />
       </React.Fragment>
     )
   }

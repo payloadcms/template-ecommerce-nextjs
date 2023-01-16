@@ -11,10 +11,6 @@
 .richText {
   position: relative;
 
-  h1 {
-    @extend %h2;
-  }
-
   &::after {
     content: '';
     display: block;

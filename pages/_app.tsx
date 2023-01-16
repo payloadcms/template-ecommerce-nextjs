@@ -2,13 +2,15 @@ import { AppProps } from 'next/app';
 import { GridProvider } from '@faceless-ui/css-grid';
 import { ModalContainer, ModalProvider } from '@faceless-ui/modal';
 import React, { useCallback } from 'react';
-import { Header as HeaderType } from '../payload-types';
+import { Header as HeaderType, Footer as FooterType } from '../payload-types';
 import cssVariables from '../cssVariables';
 import { AdminBar } from '../components/AdminBar';
 import { AuthProvider } from '../providers/Auth';
 import { useRouter } from 'next/router';
 import { Header } from '../components/Header';
 import { CartProvider } from '../providers/Cart';
+import { Footer } from '../components/Footer';
+
 import '../css/app.scss';
 
 const PayloadApp = (
@@ -17,6 +19,7 @@ const PayloadApp = (
     preview: boolean
     collection: string
     header: HeaderType
+    footer: FooterType
   }>
 ): React.ReactElement => {
   const {
@@ -75,6 +78,7 @@ const PayloadApp = (
             />
             <Header header={pageProps.header} />
             <Component {...pageProps} />
+            <Footer footer={pageProps.footer} />
             <ModalContainer />
           </ModalProvider>
         </GridProvider>

@@ -12,6 +12,7 @@ export type Props = {
   href?: string
   newTab?: boolean
   className?: string
+  type?: 'submit' | 'button'
 }
 
 export const Button: React.FC<Props> = ({
@@ -21,7 +22,8 @@ export const Button: React.FC<Props> = ({
   href,
   appearance,
   className: classNameFromProps,
-  onClick
+  onClick,
+  type = 'button'
 }) => {
   const backgroundColor = useBackgroundColor();
   const newTabProps = newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {};
@@ -29,7 +31,7 @@ export const Button: React.FC<Props> = ({
 
   const content = (
     <div className={classes.content}>
-      <Chevron />
+      {/* <Chevron /> */}
       <span className={classes.label}>
         {label}
       </span>
@@ -54,7 +56,11 @@ export const Button: React.FC<Props> = ({
   return (
     <Element
       href={href}
-      className={className}
+      className={[
+        className,
+        classes.button
+      ].filter(Boolean).join(' ')}
+      type={type}
       {...newTabProps}
       onClick={onClick}
     >

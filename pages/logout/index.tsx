@@ -1,10 +1,12 @@
+import { gql } from "@apollo/client";
 import { GetStaticProps } from "next";
 import React, { useEffect, useState } from "react";
 import { Gutter } from "../../components/Gutter";
 import { getApolloClient } from "../../graphql";
-import { HEADER_QUERY } from "../../graphql/globals";
+import { FOOTER, HEADER } from "../../graphql/globals";
 import { useAuth } from "../../providers/Auth";
-import classes from './index.module.css';
+
+import classes from './index.module.scss';
 
 const Logout: React.FC = () => {
   const { logout } = useAuth();
@@ -25,7 +27,7 @@ const Logout: React.FC = () => {
   }, [logout]);
 
   return (
-    <Gutter>
+    <Gutter className={classes.logout}>
       {success && (
         <h1>{success}</h1>
       )}
@@ -42,7 +44,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = getApolloClient();
 
   const { data } = await apolloClient.query({
-    query: HEADER_QUERY
+    query: gql(`
+      query {
+        ${HEADER}
+        ${FOOTER}
+      }
+    `)
   });
 
   return {

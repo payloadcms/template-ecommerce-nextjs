@@ -11,7 +11,7 @@ export const CartLink: React.FC<{
   const [length, setLength] = useState<number>();
 
   useEffect(() => {
-    setLength(cart?.items.length || 0)
+    setLength(cart?.items?.length || 0)
   }, [cart])
 
   return (

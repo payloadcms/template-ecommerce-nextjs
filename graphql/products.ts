@@ -20,15 +20,8 @@ export const PRODUCT = gql`
   query Product($slug: String ) {
     Products(where: { slug: { equals: $slug}}) {
       docs {
+        id
         title
-        hero {
-          type
-          richText
-          links {
-            link ${LINK_FIELDS()}
-          }
-          ${MEDIA}
-        }
         ${CATEGORIES}
         layout {
           ${CALL_TO_ACTION}
@@ -39,7 +32,6 @@ export const PRODUCT = gql`
         ${META}
       }
     }
-
     ${HEADER}
     ${FOOTER}
   }

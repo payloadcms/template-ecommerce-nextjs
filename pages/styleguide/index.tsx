@@ -1,8 +1,9 @@
+import { gql } from '@apollo/client'
 import { GetStaticProps } from 'next'
 import React from 'react'
 import { Gutter } from '../../components/Gutter'
 import { getApolloClient } from '../../graphql'
-import { HEADER_QUERY } from '../../graphql/globals'
+import { FOOTER, HEADER } from '../../graphql/globals'
 
 const Typography: React.FC = () => {
   return (
@@ -39,7 +40,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = getApolloClient();
 
   const { data } = await apolloClient.query({
-    query: HEADER_QUERY
+    query: gql(`
+      query {
+        ${HEADER}
+        ${FOOTER}
+      }
+    `)
   });
 
   return {

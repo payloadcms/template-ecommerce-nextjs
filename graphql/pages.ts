@@ -38,7 +38,6 @@ export const PAGE = gql`
         ${META}
       }
     }
-
     ${HEADER}
     ${FOOTER}
   }

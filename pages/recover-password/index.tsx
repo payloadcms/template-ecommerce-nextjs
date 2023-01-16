@@ -1,11 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { useForm } from "react-hook-form";
-import classes from './index.module.css';
 import { Input } from '../../components/Input';
 import { Gutter } from '../../components/Gutter';
 import { GetStaticProps } from 'next';
 import { getApolloClient } from '../../graphql';
-import { HEADER_QUERY } from '../../graphql/globals';
+import { FOOTER, HEADER } from '../../graphql/globals';
+import { gql } from '@apollo/client';
+
+import classes from './index.module.scss';
+import { Button } from '../../components/Button';
 
 type FormData = {
   email: string
@@ -37,7 +40,7 @@ const RecoverPassword: React.FC = () => {
   }, []);
 
   return (
-    <Gutter>
+    <Gutter className={classes.recoverPassword}>
       {!success && (
         <React.Fragment>
           <h1>Recover Password</h1>
@@ -49,9 +52,11 @@ const RecoverPassword: React.FC = () => {
           )}
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input name="email" label="Email Address" required register={register} error={errors.email} />
-            <button type="submit">
-              Submit
-            </button>
+            <Button
+              type="submit"
+              appearance="primary"
+              label="Submit"
+            />
           </form>
         </React.Fragment>
       )}
@@ -69,7 +74,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = getApolloClient();
 
   const { data } = await apolloClient.query({
-    query: HEADER_QUERY
+    query: gql(`
+      query {
+        ${HEADER}
+        ${FOOTER}
+      }
+    `)
   });
 
   return {

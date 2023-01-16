@@ -4,10 +4,17 @@ This repo is was made explicitly for Payload's [E-Commerce Boilerplate](https://
 
 Key features:
 
-- Next.js, GraphQL, TypeScript
+- Payload, Next.js, GraphQL, TypeScript
 - Complete authentication workflow
 - Complete shopping experience
+- Full shopping cart implementation
+- Full checkout workflow
+- Pre-made layout building blocks
 - Stripe integration
+- SEO enabled
+- One-time purchases
+- Subscriptions
+- Paywall
 
 ## Getting Started
 

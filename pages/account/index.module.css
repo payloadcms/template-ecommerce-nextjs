@@ -1,5 +1,9 @@
+.account {
+  margin-bottom: var(--block-padding);
+}
+
 .form {
-  margin-bottom: 30px;
+  margin-bottom: var(--base);
 }
 
 .success,

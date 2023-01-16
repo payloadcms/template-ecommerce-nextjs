@@ -79,7 +79,7 @@ const Account: React.FC = () => {
   }, [router]);
 
   return (
-    <Gutter>
+    <Gutter className={classes.account}>
       <h1>Account</h1>
       {error && <div className={classes.error}>{error}</div>}
       {success && <div className={classes.success}>{success}</div>}

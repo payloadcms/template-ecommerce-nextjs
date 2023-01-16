@@ -3,12 +3,15 @@ import { useForm } from 'react-hook-form';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../../providers/Auth';
 import { Input } from '../../components/Input';
-import classes from './index.module.css';
 import { useRouter } from 'next/router';
 import { Gutter } from '../../components/Gutter';
 import { GetStaticProps } from 'next';
 import { getApolloClient } from '../../graphql';
-import { HEADER_QUERY } from '../../graphql/globals';
+import { FOOTER, HEADER } from '../../graphql/globals';
+import { gql } from '@apollo/client';
+
+import classes from './index.module.scss';
+import { Button } from '../../components/Button';
 
 type FormData = {
   email: string;
@@ -44,13 +47,17 @@ const Login: React.FC = () => {
   }, [router]);
 
   return (
-    <Gutter>
+    <Gutter className={classes.login}>
       <h1>Log in</h1>
       {error && <div className={classes.error}>{error}</div>}
       <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
         <Input name="email" label="Email Address" required register={register} error={errors.email} />
         <Input name="password" type="password" label="Password" required register={register} error={errors.password} />
-        <input type="submit" />
+        <Button
+          type="submit"
+          appearance="primary"
+          label="Login"
+        />
       </form>
       <Link href="/create-account">
         Create an account
@@ -67,7 +74,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = getApolloClient();
 
   const { data } = await apolloClient.query({
-    query: HEADER_QUERY
+    query: gql(`
+      query {
+        ${HEADER}
+        ${FOOTER}
+      }
+    `)
   });
 
   return {

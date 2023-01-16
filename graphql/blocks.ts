@@ -18,18 +18,8 @@ export const CONTENT = `
 ...on Content {
   blockType
   contentBackgroundColor
-  layout
-  columnOne {
-    richText
-    enableLink
-    link ${LINK_FIELDS()}
-  }
-  columnTwo {
-    richText
-    enableLink
-    link ${LINK_FIELDS()}
-  }
-  columnThree {
+  columns {
+    size
     richText
     enableLink
     link ${LINK_FIELDS()}

@@ -1,5 +1,9 @@
 @import '../../css/type.scss';
 
+.button {
+  border: none;
+}
+
 .content {
   display: flex;
   align-items: center;
@@ -22,7 +26,6 @@
   text-decoration: none;
   display: inline-flex;
   padding: 12px 18px;
-  margin-bottom: var(--base);
 }
 
 .primary--white {
@@ -47,5 +50,4 @@
 
 .appearance--default {
   padding: 0;
-  margin-left: -8px;
 }

@@ -5,6 +5,7 @@ import { Product } from '../../payload-types';
 import Blocks from '../../components/Blocks';
 import { Hero } from '../../components/Hero';
 import { getApolloClient } from '../../graphql';
+import { ProductHero } from '../../components/Hero/Product';
 
 const ProductTemplate: React.FC<{
   product: Product
@@ -16,13 +17,14 @@ const ProductTemplate: React.FC<{
 
   if (product) {
     const {
-      hero,
       layout,
     } = product;
 
     return (
       <React.Fragment>
-        <Hero {...hero} />
+        <ProductHero
+          product={product}
+        />
         <Blocks blocks={layout} />
       </React.Fragment>
     )
@@ -50,7 +52,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: {
       product: data?.Products?.docs?.[0] || null,
-      mainMenu: data?.MainMenu || null,
+      header: data?.Header || null,
+      footer: data?.Footer || null
     },
   };
 }

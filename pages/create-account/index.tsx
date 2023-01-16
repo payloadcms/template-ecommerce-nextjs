@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { Fragment, useCallback, useState } from 'react';
 import Link from 'next/link';
 import { useForm } from "react-hook-form";
 import { useAuth } from '../../providers/Auth';
@@ -7,7 +7,9 @@ import { Input } from '../../components/Input';
 import { Gutter } from '../../components/Gutter';
 import { GetStaticProps } from 'next';
 import { getApolloClient } from '../../graphql';
-import { HEADER_QUERY } from '../../graphql/globals';
+import { FOOTER, HEADER } from '../../graphql/globals';
+import { gql } from '@apollo/client';
+import { Button } from '../../components/Button';
 
 type FormData = {
   email: string
@@ -46,7 +48,7 @@ const CreateAccount: React.FC = () => {
   }, [login]);
 
   return (
-    <Gutter>
+    <Gutter className={classes.createAccount}>
       {!success && (
         <React.Fragment>
           <h1>Create Account</h1>
@@ -60,10 +62,18 @@ const CreateAccount: React.FC = () => {
             <Input name="password" type="password" label="Password" required register={register} error={errors.password} />
             <Input name="firstName" label="First Name" required register={register} error={errors.firstName} />
             <Input name="lastName" label="Last Name" required register={register} error={errors.lastName} />
-            <button type="submit">
-              Create account
-            </button>
+            <Button
+              type="submit"
+              label="Create account"
+              appearance="primary"
+            />
           </form>
+          <Fragment>
+            {'Already have an account? '}
+            <Link href="/login">
+              Login
+            </Link>
+          </Fragment>
         </React.Fragment>
       )}
       {success && (
@@ -83,7 +93,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = getApolloClient();
 
   const { data } = await apolloClient.query({
-    query: HEADER_QUERY
+    query: gql(`
+      query {
+        ${HEADER}
+        ${FOOTER}
+      }
+    `)
   });
 
   return {

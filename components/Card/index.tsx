@@ -56,7 +56,7 @@ export const Card: React.FC<{
         )}
         {metaImage && typeof metaImage !== 'string' && (
           <Media
-            className={classes.media}
+            imgClassName={classes.image}
             resource={metaImage}
             fill
           />
@@ -107,12 +107,7 @@ export const Card: React.FC<{
           )}
         </div>
       )}
-      <AddToCartButton
-        item={{
-          product: doc,
-          quantity: 1
-        }}
-      />
+      <AddToCartButton product={doc} />
     </div>
   )
 }

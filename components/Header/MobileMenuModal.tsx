@@ -1,5 +1,4 @@
 import { Modal } from "@faceless-ui/modal";
-import { HeaderBar } from ".";
 import { Header } from "../../payload-types"
 import { Gutter } from "../Gutter";
 import { CMSLink } from "../Link";
@@ -15,8 +14,6 @@ export const slug = 'menu-modal';
 export const MobileMenuModal: React.FC<Props> = ({ navItems }) => {
   return (
     <Modal slug={slug} className={classes.mobileMenuModal}>
-      <HeaderBar />
-
       <Gutter>
         <div className={classes.mobileMenuItems}>
           {navItems.map(({ link }, i) => {

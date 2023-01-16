@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Page } from '../../payload-types';
+import { CartPage, Page } from '../../payload-types';
 import { toKebabCase } from '../../utilities/toKebabCase';
 import { BackgroundColor } from '../BackgroundColor';
 import { VerticalPaddingOptions } from '../VerticalPadding';
@@ -16,9 +16,11 @@ const blockComponents = {
 }
 
 const Blocks: React.FC<{
-  blocks: Page['layout']
+  blocks: Page['layout'] | CartPage['layout']
+  disableTopPadding?: boolean
 }> = (props) => {
   const {
+    disableTopPadding,
     blocks,
   } = props;
 
@@ -45,15 +47,15 @@ const Blocks: React.FC<{
             let paddingTop: VerticalPaddingOptions = 'large';
             let paddingBottom: VerticalPaddingOptions = 'large';
 
-            if (backgroundColor === prevBlockBackground) {
+            if (backgroundColor && backgroundColor === prevBlockBackground) {
               paddingTop = 'medium';
             }
 
-            if (backgroundColor === nextBlockBackground) {
+            if (backgroundColor && backgroundColor === nextBlockBackground) {
               paddingBottom = 'medium';
             }
 
-            if (index === 0) {
+            if (disableTopPadding && index === 0) {
               paddingTop = 'none';
             }
 

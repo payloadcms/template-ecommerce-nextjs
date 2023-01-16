@@ -1,6 +1,6 @@
 import React from 'react';
 import { UseFormRegister, FieldValues } from 'react-hook-form';
-import classes from './index.module.css';
+import classes from './index.module.scss';
 
 type Props = {
   name: string;

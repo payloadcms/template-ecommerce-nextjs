@@ -17,10 +17,12 @@
   margin: 50px 0;
   font-size: 64px;
   line-height: 70px;
+  font-weight: bold;
 
   @include mid-break {
-    font-size: 48px;
-    line-height: 54px;
+    margin: 24px 0;
+    font-size: 42px;
+    line-height: 42px;
   }
 }
 
@@ -28,8 +30,10 @@
   margin: 32px 0;
   font-size: 48px;
   line-height: 54px;
+  font-weight: bold;
 
   @include mid-break {
+    margin: 22px 0;
     font-size: 32px;
     line-height: 40px;
   }
@@ -39,8 +43,10 @@
   margin: 28px 0;
   font-size: 32px;
   line-height: 40px;
+  font-weight: bold;
 
   @include mid-break {
+    margin: 20px 0;
     font-size: 26px;
     line-height: 32px;
   }
@@ -50,6 +56,7 @@
   margin: 24px 0;
   font-size: 26px;
   line-height: 32px;
+  font-weight: bold;
 
   @include mid-break {
     font-size: 22px;
@@ -61,6 +68,7 @@
   margin: 20px 0;
   font-size: 22px;
   line-height: 30px;
+  font-weight: bold;
 
   @include mid-break {
     font-size: 18px;
@@ -70,13 +78,9 @@
 
 %h6 {
   margin: 20px 0;
-  font-size: 24px;
-  line-height: 28px;
-
-  @include mid-break {
-    font-size: 20px;
-    line-height: 30px;
-  }
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: bold;
 }
 
 /////////////////////////////
@@ -91,11 +95,6 @@
     font-size: 15px;
     line-height: 24px;
   }
-
-  @include small-break {
-    font-size: 13px;
-    line-height: 24px;
-  }
 }
 
 %large-body {
@@ -105,29 +104,17 @@
   @include mid-break {
     font-size: 22px;
     line-height: 30px;
-
-  }
-
-  @include small-break {
-    font-size: 17px;
-    line-height: 24px;
   }
 }
 
 %label {
   font-size: 16px;
   line-height: 24px;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   text-transform: uppercase;
 
   @include mid-break {
     font-size: 13px;
     letter-spacing: 2.75px;
-  }
-
-  @include small-break {
-    font-size: 12px;
-    line-height: 18px;
-    letter-spacing: 2.625px;
   }
 }

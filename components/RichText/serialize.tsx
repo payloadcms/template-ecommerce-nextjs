@@ -145,6 +145,10 @@ const serialize = (children: Children): React.ReactElement[] => children.map((no
         <a
           href={escapeHTML(node.url)}
           key={i}
+          {...node.newTab ? {
+            target: '_blank',
+            rel: 'noopener noreferrer'
+          } : {}}
         >
           {serialize(node.children)}
         </a>

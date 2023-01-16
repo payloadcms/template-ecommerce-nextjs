@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { Fragment, useCallback } from 'react';
 import { Gutter } from '../../components/Gutter';
 import { GetStaticProps } from 'next';
 import { getApolloClient } from '../../graphql';
@@ -7,10 +7,31 @@ import { useCart } from '../../providers/Cart';
 import { Media } from '../../components/Media';
 import { RemoveFromCartButton } from '../../components/RemoveFromCartButton';
 import Link from 'next/link';
-import { HEADER_QUERY } from '../../graphql/globals';
+import { CART, FOOTER, HEADER } from '../../graphql/globals';
+import { gql } from '@apollo/client';
+import { CartPage as CartPageType } from '../../payload-types';
+import Blocks from '../../components/Blocks';
+import { Hero } from '../../components/Hero';
+import { useAuth } from '../../providers/Auth';
 
-const Cart: React.FC = () => {
-  const { cart, cartIsEmpty, addItemToCart } = useCart();
+const CartPage: React.FC<{
+  cartPage: CartPageType
+}> = (props) => {
+  const {
+    cartPage: {
+      shopPage,
+      hero,
+      layout
+    }
+  } = props;
+
+  const { user } = useAuth();
+
+  const {
+    cart,
+    cartIsEmpty,
+    addItemToCart
+   } = useCart();
 
   const handleChange = useCallback(({ quantity, product }) => {
     addItemToCart({
@@ -20,81 +41,116 @@ const Cart: React.FC = () => {
   }, [addItemToCart])
 
   return (
-    <Gutter>
-      <div className={classes.cart}>
-        <header className={classes.header}>
-          <h1 className={classes.headerTitle}>
-            Cart
-          </h1>
-        </header>
-      </div>
-      {cartIsEmpty && (
-        <div>
-          Your cart is empty
-          <Link href="/shop">
-            Shop now
-          </Link>
-        </div>
-      )}
-      {!cartIsEmpty && (
-        <div className={classes.items}>
-          {cart.items.map((item, index) => {
-            const {
-              quantity,
-              product,
-              product: {
-                title,
-                meta: {
-                  image: metaImage
-                }
-              }
-            } = item;
+    <Fragment>
+      <Hero {...hero} />
+      <Gutter className={classes.cartWrapper}>
+        {cartIsEmpty && (
+          <div>
+            Your cart is empty.
+            {!user && (
+              <Fragment>
+                {' '}
+                <Link href={`/login`}>
+                  Log in
+                </Link>
+                {` to view a saved cart.`}
+              </Fragment>
+            )}
+            {user && typeof shopPage === 'object' && shopPage?.slug && (
+              <Fragment>
+                {' '}
+                <Link href={`/${shopPage.slug}`}>
+                  Continue shopping?
+                </Link>
+              </Fragment>
+            )}
+          </div>
+        )}
+        {!cartIsEmpty && (
+          <div className={classes.items}>
+            <div className={classes.cartTotal}>
+              {`There ${cart.items.length === 1 ? 'is' : 'are'} ${cart.items.length} item${cart.items.length === 1 ? '' : 's'} in your cart.`}
+              {!user && (
+                <Fragment>
+                  {' '}
+                  <Link href={`/login`}>
+                    Log in
+                  </Link>
+                  {` to save your progress.`}
+                </Fragment>
+              )}
+            </div>
+            {cart.items.map((item, index) => {
+              if (typeof item.product === 'object') {
+                const {
+                  quantity,
+                  product,
+                  product: {
+                    title,
+                    meta: {
+                      image: metaImage
+                    }
+                  }
+                } = item;
 
-            return (
-              <div
-                key={index}
-                className={classes.row}
-              >
-                <div className={classes.image}>
-                  {!metaImage && (
-                    <span>
-                      No image
-                    </span>
-                  )}
-                  {metaImage && typeof metaImage !== 'string' && (
-                    <Media
-                      className={classes.media}
-                      resource={metaImage}
-                    />
-                  )}
-                </div>
-                <p className={classes.title}>
-                  {title}
-                </p>
-                <label>
-                  Quantity
-                  &nbsp;
-                  <input
-                    type="number"
-                    value={quantity}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      handleChange({
-                        quantity: value,
-                        product
-                      })
-                    }}
-                  />
-                </label>
-                <div>
-                  <RemoveFromCartButton product={product} />
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      )}
-    </Gutter>
+                const isLast = index === cart.items.length - 1;
+
+                return (
+                  <Fragment key={index}>
+                    <div className={classes.row}>
+                      <div className={classes.mediaWrapper}>
+                        {!metaImage && (
+                          <span className={classes.placeholder}>
+                            No image
+                          </span>
+                        )}
+                        {metaImage && typeof metaImage !== 'string' && (
+                          <Media
+                            imgClassName={classes.image}
+                            resource={metaImage}
+                            fill
+                          />
+                        )}
+                      </div>
+                      <div className={classes.rowContent}>
+                        <h6 className={classes.title}>
+                          {title}
+                        </h6>
+                        <label>
+                          Quantity
+                          &nbsp;
+                          <input
+                            type="number"
+                            value={quantity}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              handleChange({
+                                quantity: value,
+                                product
+                              })
+                            }}
+                          />
+                        </label>
+                        <div>
+                          <RemoveFromCartButton product={product} />
+                        </div>
+                      </div>
+                    </div>
+                    {!isLast && (
+                      <hr className={classes.rowHR} />
+                    )}
+                  </Fragment>
+                )
+              }
+              return null
+            })}
+          </div>
+        )}
+      </Gutter>
+      <Blocks
+        blocks={layout}
+      />
+    </Fragment>
   );
 };
 
@@ -102,15 +158,22 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = getApolloClient();
 
   const { data } = await apolloClient.query({
-    query: HEADER_QUERY
+    query: gql(`
+      query {
+        ${HEADER}
+        ${FOOTER}
+        ${CART}
+      }
+    `)
   });
 
   return {
     props: {
       header: data?.Header || null,
       footer: data?.Footer || null,
+      cartPage: data?.CartPage || null
     },
   };
 }
 
-export default Cart;
+export default CartPage;

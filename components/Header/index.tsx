@@ -11,61 +11,50 @@ import { useAuth } from '../../providers/Auth';
 import { CartLink } from '../CartLink';
 import classes from './index.module.scss';
 
-type HeaderBarProps = {
-  children?: React.ReactNode;
-}
-export const HeaderBar: React.FC<HeaderBarProps> = ({ children }) => {
-  return (
-    <header className={classes.header}>
-      <Gutter className={classes.wrap}>
-        <Link href="/">
-          <Logo />
-        </Link>
-        {children}
-        <ModalToggler slug={menuModalSlug} className={classes.mobileMenuToggler}>
-          <MenuIcon />
-        </ModalToggler>
-      </Gutter>
-    </header>
-  )
-}
-
 export const Header: React.FC<{ header: HeaderType }> = ({ header }) => {
   const navItems = header?.navItems || [];
   const { user } = useAuth();
 
   return (
     <>
-      <HeaderBar>
-        <nav className={classes.nav}>
-          {navItems.map(({ link }, i) => {
-            return (
-              <CMSLink key={i} {...link} />
-            )
-          })}
-          {user && (
-            <React.Fragment>
-              <Link href="/account">
-                Account
-              </Link>
-              <Link href="/logout">
-                Logout
-              </Link>
-            </React.Fragment>
-          )}
-          {!user && (
-            <React.Fragment>
-              <Link href="/login">
-                Login
-              </Link>
-              <Link href="/create-account">
-                Create Account
-              </Link>
-            </React.Fragment>
-          )}
-          <CartLink />
-        </nav>
-      </HeaderBar>
+      <header className={classes.header}>
+        <Gutter className={classes.wrap}>
+          <Link href="/">
+            <Logo />
+          </Link>
+          <nav className={classes.nav}>
+            {navItems.map(({ link }, i) => {
+              return (
+                <CMSLink key={i} {...link} />
+              )
+            })}
+            {user && (
+              <React.Fragment>
+                <Link href="/account">
+                  Account
+                </Link>
+                <Link href="/logout">
+                  Logout
+                </Link>
+              </React.Fragment>
+            )}
+            {!user && (
+              <React.Fragment>
+                <Link href="/login">
+                  Login
+                </Link>
+                <Link href="/create-account">
+                  Create Account
+                </Link>
+              </React.Fragment>
+            )}
+            <CartLink />
+          </nav>
+          <ModalToggler slug={menuModalSlug} className={classes.mobileMenuToggler}>
+            <MenuIcon />
+          </ModalToggler>
+        </Gutter>
+      </header>
       <MobileMenuModal navItems={navItems} />
     </>
   )
