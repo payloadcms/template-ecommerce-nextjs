@@ -7,6 +7,7 @@ import { Product } from '../../../payload-types';
 
 import classes from './index.module.scss'
 import { Media } from '../../Media';
+import { Price } from '../../Price';
 
 export const ProductHero: React.FC<{
   product: Product
@@ -23,7 +24,7 @@ export const ProductHero: React.FC<{
   return (
     <Gutter className={classes.productHero}>
       <Grid>
-        <Cell cols={6} colsM={8}>
+        <Cell cols={5} colsM={8}>
           <div className={classes.content}>
             <div className={classes.categories}>
               {categories?.map((category, index) => {
@@ -56,10 +57,10 @@ export const ProductHero: React.FC<{
                 {description}
               </p>
             )}
-            <AddToCartButton product={product} />
+            <Price product={product} />
           </div>
         </Cell>
-        <Cell cols={6} colsM={8}>
+        <Cell cols={7} colsM={8}>
           <div className={classes.mediaWrapper}>
             {!metaImage && (
               <div className={classes.placeholder}>

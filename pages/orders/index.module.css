@@ -1,4 +1,4 @@
-.account {
+.orders {
   margin-bottom: var(--block-padding);
 }
 
@@ -19,7 +19,11 @@
   color: red;
 }
 
-.hr {
-  margin: calc(var(--block-padding) / 2) 0;
-  background-color: var(--color-base-900);
+.ordersList {
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  margin-bottom: calc(var(--base) / 2);
 }

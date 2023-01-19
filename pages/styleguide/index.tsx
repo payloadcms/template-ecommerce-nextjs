@@ -3,7 +3,7 @@ import { GetStaticProps } from 'next'
 import React from 'react'
 import { Gutter } from '../../components/Gutter'
 import { getApolloClient } from '../../graphql'
-import { FOOTER, HEADER } from '../../graphql/globals'
+import { FOOTER, HEADER, SETTINGS } from '../../graphql/globals'
 
 const Typography: React.FC = () => {
   return (
@@ -44,6 +44,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       query {
         ${HEADER}
         ${FOOTER}
+        ${SETTINGS}
       }
     `)
   });

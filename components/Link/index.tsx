@@ -63,6 +63,9 @@ export const CMSLink: React.FC<CMSLinkType> = ({
   }
 
   return (
-    <Button className={className} {...buttonProps} el="link" />
+    <Button
+      className={className}
+      {...buttonProps}
+    />
   )
 }

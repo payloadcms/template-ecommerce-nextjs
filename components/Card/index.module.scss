@@ -10,6 +10,16 @@
 
 .body {
   margin-top: calc(var(--base) / 2);
+
+  @include mid-break {
+    margin-top: 0;
+  }
+}
+
+.price {
+  font-weight: 600;
+  margin: 0;
+  margin-right: calc(var(--base) / 2);
 }
 
 .leader {
@@ -22,7 +32,12 @@
 }
 
 .description {
-  margin: 0 0 calc(var(--base) / 2) 0;
+  margin: 0;
+  margin-bottom: calc(var(--base) / 2);
+
+  @include mid-break {
+    margin-bottom: 0;
+  }
 }
 
 .hideImageOnMobile {
@@ -50,4 +65,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+
+  @include mid-break {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

@@ -4,7 +4,7 @@ import { Input } from '../../components/Input';
 import { Gutter } from '../../components/Gutter';
 import { GetStaticProps } from 'next';
 import { getApolloClient } from '../../graphql';
-import { FOOTER, HEADER } from '../../graphql/globals';
+import { FOOTER, HEADER, SETTINGS } from '../../graphql/globals';
 import { gql } from '@apollo/client';
 
 import classes from './index.module.scss';
@@ -78,6 +78,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       query {
         ${HEADER}
         ${FOOTER}
+        ${SETTINGS}
       }
     `)
   });

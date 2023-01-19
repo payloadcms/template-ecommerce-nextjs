@@ -225,7 +225,7 @@ export interface Product {
     | {
         contentBackgroundColor?: 'white' | 'black';
         columns: {
-          size?: 'oneThird' | 'half' | 'full';
+          size?: 'oneThird' | 'half' | 'twoThirds' | 'full';
           richText: {
             [k: string]: unknown;
           }[];
@@ -330,7 +330,6 @@ export interface Footer {
  */
 export interface CartPage {
   id: string;
-  shopPage?: string | Page;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText: {
@@ -379,7 +378,7 @@ export interface CartPage {
     | {
         contentBackgroundColor?: 'white' | 'black';
         columns: {
-          size?: 'oneThird' | 'half' | 'full';
+          size?: 'oneThird' | 'half' | 'twoThirds' | 'full';
           richText: {
             [k: string]: unknown;
           }[];
@@ -441,6 +440,14 @@ export interface CartPage {
         blockType: 'archive';
       }
   )[];
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "settings".
+ */
+export interface Settings {
+  id: string;
+  shopPage?: string | Page;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -540,7 +547,7 @@ export interface Order {
       | {
           contentBackgroundColor?: 'white' | 'black';
           columns: {
-            size?: 'oneThird' | 'half' | 'full';
+            size?: 'oneThird' | 'half' | 'twoThirds' | 'full';
             richText: {
               [k: string]: unknown;
             }[];

@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import React, { ElementType } from 'react';
 import { useBackgroundColor } from '../BackgroundColor';
-import { Chevron } from '../icons/Chevron';
 import classes from './index.module.scss';
 
 export type Props = {
@@ -13,18 +12,21 @@ export type Props = {
   newTab?: boolean
   className?: string
   type?: 'submit' | 'button'
+  disabled?: boolean
 }
 
 export const Button: React.FC<Props> = ({
-  el = 'button',
+  el: elFromProps = 'link',
   label,
   newTab,
   href,
   appearance,
   className: classNameFromProps,
   onClick,
-  type = 'button'
+  type = 'button',
+  disabled
 }) => {
+  let el = elFromProps;
   const backgroundColor = useBackgroundColor();
   const newTabProps = newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {};
   const className = [classNameFromProps, classes[`appearance--${appearance}`], classes[`${appearance}--${backgroundColor}`], classes.button].filter(Boolean).join(' ');
@@ -37,6 +39,8 @@ export const Button: React.FC<Props> = ({
       </span>
     </div>
   )
+
+  if (onClick || type === 'submit') el = 'button';
 
   if (el === 'link') {
     return (
@@ -63,6 +67,7 @@ export const Button: React.FC<Props> = ({
       type={type}
       {...newTabProps}
       onClick={onClick}
+      disabled={disabled}
     >
       {content}
     </Element>

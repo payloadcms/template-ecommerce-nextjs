@@ -14,7 +14,7 @@
 }
 
 %h1 {
-  margin: 50px 0;
+  margin: 40px 0;
   font-size: 64px;
   line-height: 70px;
   font-weight: bold;
@@ -27,7 +27,7 @@
 }
 
 %h2 {
-  margin: 32px 0;
+  margin: 28px 0;
   font-size: 48px;
   line-height: 54px;
   font-weight: bold;
@@ -40,7 +40,7 @@
 }
 
 %h3 {
-  margin: 28px 0;
+  margin: 24px 0;
   font-size: 32px;
   line-height: 40px;
   font-weight: bold;
@@ -53,7 +53,7 @@
 }
 
 %h4 {
-  margin: 24px 0;
+  margin: 20px 0;
   font-size: 26px;
   line-height: 32px;
   font-weight: bold;
@@ -110,11 +110,10 @@
 %label {
   font-size: 16px;
   line-height: 24px;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   text-transform: uppercase;
 
   @include mid-break {
     font-size: 13px;
-    letter-spacing: 2.75px;
   }
 }

@@ -3,7 +3,7 @@ import { GetStaticProps } from "next";
 import React, { useEffect, useState } from "react";
 import { Gutter } from "../../components/Gutter";
 import { getApolloClient } from "../../graphql";
-import { FOOTER, HEADER } from "../../graphql/globals";
+import { FOOTER, HEADER, SETTINGS } from "../../graphql/globals";
 import { useAuth } from "../../providers/Auth";
 
 import classes from './index.module.scss';
@@ -48,6 +48,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       query {
         ${HEADER}
         ${FOOTER}
+        ${SETTINGS}
       }
     `)
   });

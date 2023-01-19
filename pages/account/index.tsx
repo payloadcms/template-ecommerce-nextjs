@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../../providers/Auth';
 import classes from './index.module.css';
@@ -9,6 +8,7 @@ import { Gutter } from '../../components/Gutter';
 import { GetStaticProps } from 'next';
 import { getApolloClient } from '../../graphql';
 import { HEADER_QUERY } from '../../graphql/globals';
+import { Button } from '../../components/Button';
 
 type FormData = {
   email: string;
@@ -87,11 +87,43 @@ const Account: React.FC = () => {
         <Input name="email" label="Email Address" required register={register} error={errors.email} />
         <Input name="firstName" label="First Name" required register={register} error={errors.firstName} />
         <Input name="lastName" label="Last Name" required register={register} error={errors.lastName} />
-        <button type="submit">Update account</button>
+        <Button
+          type="submit"
+          label="Update account"
+          appearance="primary"
+        />
       </form>
-      <Link href="/logout">
-        Log out
-      </Link>
+      <hr className={classes.hr} />
+      <h2>
+        Subscriptions
+      </h2>
+      <div>
+        {user?.subscriptions?.length > 0 ? user.subscriptions.map((subscription) => (
+          <div key={subscription.id}>
+            <h3>{typeof subscription.product === 'object' ? subscription.product.title : subscription.product}</h3>
+          </div>
+        )) : (
+          <div>
+            You have no subscriptions.
+          </div>
+        )}
+      </div>
+      <hr className={classes.hr} />
+      <h2>
+        Orders
+      </h2>
+      <Button
+        className={classes.ordersButton}
+        href="/orders"
+        appearance="primary"
+        label="View orders"
+      />
+      <hr className={classes.hr} />
+      <Button
+        href="/logout"
+        appearance="secondary"
+        label="Log out"
+      />
     </Gutter>
   );
 };

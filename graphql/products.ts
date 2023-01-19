@@ -1,9 +1,7 @@
 import { gql } from "@apollo/client";
 import { ARCHIVE_BLOCK, CALL_TO_ACTION, CONTENT, MEDIA_BLOCK } from "./blocks";
 import { CATEGORIES } from "./categories";
-import { HEADER, FOOTER } from "./globals";
-import { LINK_FIELDS } from "./link";
-import { MEDIA } from "./media";
+import { HEADER, FOOTER, SETTINGS } from "./globals";
 import { META } from "./meta";
 
 export const PRODUCTS = gql`
@@ -29,10 +27,12 @@ export const PRODUCT = gql`
           ${MEDIA_BLOCK}
           ${ARCHIVE_BLOCK}
         }
+        priceJSON
         ${META}
       }
     }
     ${HEADER}
     ${FOOTER}
+    ${SETTINGS}
   }
 `

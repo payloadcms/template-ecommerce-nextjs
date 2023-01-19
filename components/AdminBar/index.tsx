@@ -30,7 +30,7 @@ export const AdminBar: React.FC<{
         <PayloadAdminBar
           {...adminBarProps}
           key={user?.id} // use key to get the admin bar to re-run its `me` request
-          cmsURL={process.env.NEXT_PUBLIC_APP_URL}
+          cmsURL={process.env.NEXT_PUBLIC_CMS_URL}
           className={classes.payloadAdminBar}
           classNames={{
             user: classes.user,

@@ -32,7 +32,8 @@ const Login: React.FC = () => {
     async (data: FormData) => {
       try {
         await login(data);
-        router.push('/account');
+        if (router.query.redirect) router.push(router.query.redirect as string);
+        else router.push('/account');
       } catch (_) {
         setError('There was an error with the credentials provided. Please try again.');
       }
@@ -49,6 +50,7 @@ const Login: React.FC = () => {
   return (
     <Gutter className={classes.login}>
       <h1>Log in</h1>
+      <p>To log in, use the email <b>dev@payloadcms.com</b> with the password <b>test</b>.</p>
       {error && <div className={classes.error}>{error}</div>}
       <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
         <Input name="email" label="Email Address" required register={register} error={errors.email} />

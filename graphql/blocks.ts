@@ -51,6 +51,7 @@ export const ARCHIVE_BLOCK = `
         id
         slug
         title
+        priceJSON
       }
     }
   }
@@ -61,6 +62,7 @@ export const ARCHIVE_BLOCK = `
         id
         slug
         title
+        priceJSON
         ${CATEGORIES}
         ${META}
       }

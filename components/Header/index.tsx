@@ -29,14 +29,9 @@ export const Header: React.FC<{ header: HeaderType }> = ({ header }) => {
               )
             })}
             {user && (
-              <React.Fragment>
-                <Link href="/account">
-                  Account
-                </Link>
-                <Link href="/logout">
-                  Logout
-                </Link>
-              </React.Fragment>
+              <Link href="/account">
+                Account
+              </Link>
             )}
             {!user && (
               <React.Fragment>

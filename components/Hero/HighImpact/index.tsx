@@ -11,23 +11,6 @@ import classes from './index.module.scss';
 export const HighImpactHero: React.FC<Page['hero']> = ({ richText, media, links }) => {
   return (
     <Gutter className={classes.hero}>
-      <div className={classes.media}>
-        {typeof media === 'object' && (
-          <Fragment>
-            <Media
-              resource={media}
-              fill
-              imgClassName={classes.image}
-            />
-            {media?.caption && (
-              <RichText
-                content={media.caption}
-                className={classes.caption}
-              />
-            )}
-          </Fragment>
-        )}
-      </div>
       <Grid className={classes.content}>
         <Cell cols={10} colsM={4}>
           <RichText content={richText} />
@@ -44,6 +27,23 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ richText, media, links 
           )}
         </Cell>
       </Grid>
+      <div className={classes.media}>
+        {typeof media === 'object' && (
+          <Fragment>
+            <Media
+              resource={media}
+              // fill
+              imgClassName={classes.image}
+            />
+            {media?.caption && (
+              <RichText
+                content={media.caption}
+                className={classes.caption}
+              />
+            )}
+          </Fragment>
+        )}
+      </div>
     </Gutter>
   )
 }

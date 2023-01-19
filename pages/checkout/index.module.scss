@@ -1,5 +1,13 @@
 @import '../../css/common';
 
+.checkoutPage {
+  margin-bottom: var(--block-padding);
+}
+
+.items {
+  margin-bottom: var(--base);
+}
+
 .row {
   display: flex;
   align-items: center;
@@ -54,11 +62,7 @@
   margin: 0;
 }
 
-.itemsTotal {
-  margin-bottom: var(--base);
-}
-
-.cartTotal {
+.orderTotal {
   margin-top: var(--base);
   font-weight: 600;
 }

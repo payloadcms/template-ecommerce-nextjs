@@ -31,11 +31,22 @@ query Header {
 }
 `
 
-export const CART = `
-  CartPage {
+export const SETTINGS = `
+  Settings {
     shopPage {
       slug
     }
+  }
+`;
+
+export const SETTINGS_QUERY = gql`
+query Settings {
+  ${SETTINGS}
+}
+`
+
+export const CART = `
+  CartPage {
     hero {
       type
       richText

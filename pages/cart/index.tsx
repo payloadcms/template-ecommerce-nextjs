@@ -7,19 +7,24 @@ import { useCart } from '../../providers/Cart';
 import { Media } from '../../components/Media';
 import { RemoveFromCartButton } from '../../components/RemoveFromCartButton';
 import Link from 'next/link';
-import { CART, FOOTER, HEADER } from '../../graphql/globals';
+import { CART, FOOTER, HEADER, SETTINGS } from '../../graphql/globals';
 import { gql } from '@apollo/client';
-import { CartPage as CartPageType } from '../../payload-types';
+import { CartPage as CartPageType, Settings } from '../../payload-types';
 import Blocks from '../../components/Blocks';
 import { Hero } from '../../components/Hero';
 import { useAuth } from '../../providers/Auth';
+import { Button } from '../../components/Button';
+import { Price } from '../../components/Price';
 
 const CartPage: React.FC<{
+  settings: Settings
   cartPage: CartPageType
 }> = (props) => {
   const {
-    cartPage: {
+    settings: {
       shopPage,
+    },
+    cartPage: {
       hero,
       layout
     }
@@ -30,23 +35,30 @@ const CartPage: React.FC<{
   const {
     cart,
     cartIsEmpty,
-    addItemToCart
-   } = useCart();
-
-  const handleChange = useCallback(({ quantity, product }) => {
-    addItemToCart({
-      quantity,
-      product
-    })
-  }, [addItemToCart])
+    addItemToCart,
+    cartTotal
+  } = useCart();
 
   return (
     <Fragment>
       <Hero {...hero} />
-      <Gutter className={classes.cartWrapper}>
+      <Gutter>
         {cartIsEmpty && (
           <div>
             Your cart is empty.
+            {typeof shopPage === 'object' && shopPage?.slug && (
+              <Fragment>
+                {' '}
+                <Link href={`/${shopPage.slug}`}>
+                  Continue shopping
+                </Link>
+              </Fragment>
+            )}
+            {typeof shopPage === 'object' && shopPage?.slug && !user && (
+              <Fragment>
+                {' or'}
+              </Fragment>
+            )}
             {!user && (
               <Fragment>
                 {' '}
@@ -56,19 +68,11 @@ const CartPage: React.FC<{
                 {` to view a saved cart.`}
               </Fragment>
             )}
-            {user && typeof shopPage === 'object' && shopPage?.slug && (
-              <Fragment>
-                {' '}
-                <Link href={`/${shopPage.slug}`}>
-                  Continue shopping?
-                </Link>
-              </Fragment>
-            )}
           </div>
         )}
         {!cartIsEmpty && (
           <div className={classes.items}>
-            <div className={classes.cartTotal}>
+            <div className={classes.itemsTotal}>
               {`There ${cart.items.length === 1 ? 'is' : 'are'} ${cart.items.length} item${cart.items.length === 1 ? '' : 's'} in your cart.`}
               {!user && (
                 <Fragment>
@@ -123,14 +127,17 @@ const CartPage: React.FC<{
                             type="number"
                             value={quantity}
                             onChange={(e) => {
-                              const value = e.target.value;
-                              handleChange({
-                                quantity: value,
-                                product
+                              addItemToCart({
+                                product,
+                                quantity: Number(e.target.value)
                               })
                             }}
                           />
                         </label>
+                        <Price
+                          product={product}
+                          button={false}
+                        />
                         <div>
                           <RemoveFromCartButton product={product} />
                         </div>
@@ -144,6 +151,15 @@ const CartPage: React.FC<{
               }
               return null
             })}
+            <div className={classes.cartTotal}>
+              {`Cart total: ${cartTotal.formatted}`}
+            </div>
+            <Button
+              className={classes.checkoutButton}
+              href={user ? '/checkout' : '/login?redirect=%2Fcheckout'}
+              label={user ? 'Checkout' : 'Login to checkout'}
+              appearance='primary'
+            />
           </div>
         )}
       </Gutter>
@@ -160,6 +176,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { data } = await apolloClient.query({
     query: gql(`
       query {
+        ${SETTINGS}
         ${HEADER}
         ${FOOTER}
         ${CART}
@@ -171,7 +188,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       header: data?.Header || null,
       footer: data?.Footer || null,
-      cartPage: data?.CartPage || null
+      cartPage: data?.CartPage || null,
+      settings: data?.Settings || null,
     },
   };
 }

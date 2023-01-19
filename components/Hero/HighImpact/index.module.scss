@@ -1,40 +1,21 @@
 @import '../../../css/queries';
 
 .hero {
-  padding-top: calc(var(--gutter-h) * 1);
-  padding-bottom: calc(var(--gutter-h) * 1.5);
+  padding-top: calc(var(--gutter-h) / 2);
   position: relative;
   overflow: hidden;
 
   @include mid-break {
-    padding-top: calc(var(--gutter-h) * 2);
-    padding-bottom: calc(var(--gutter-h) * 3);
+    padding-top: var(--gutter-h);
   }
-}
-
-.image {
-  object-fit: cover;
 }
 
 .media {
-  width: calc(100% - var(--gutter-h));
-  position: absolute;
-  left: calc(var(--gutter-h) / 2);
-  top: 0;
-  height: 100%;
-
-  &::after {
-    content: ' ';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    // background-color: rgba(255, 255, 255, 0.2);
-    // mix-blend-mode: lighten;
-  }
+  width: calc(100% + var(--gutter-h));
+  margin-top: calc(var(--base) * 2);
 
   @include mid-break {
+    margin-top: var(--base);
     margin-left: calc(var(--gutter-h) * -1);
     width: calc(100% + var(--gutter-h) * 2);
   }
@@ -49,14 +30,10 @@
 }
 
 .caption {
-  position: absolute;
-  left: calc(var(--gutter-h) / 2);
-  bottom: calc(var(--gutter-h) / 2);
-  z-index: 1;
-
+  margin-top: var(--base);
   @include mid-break {
-    bottom: calc(var(--gutter-h));
-    left: calc(var(--gutter-h) * 1.5);
+    position: relative;
+    left: var(--gutter-h);
   }
 }
 

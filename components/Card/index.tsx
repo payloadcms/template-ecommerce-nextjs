@@ -1,9 +1,29 @@
 import classes from './index.module.scss';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Product } from '../../payload-types';
 import Link from 'next/link';
 import { Media } from '../Media';
-import { AddToCartButton } from '../AddToCartButton';
+import { Price } from '../Price';
+
+const priceFromJSON = (priceJSON): string => {
+  let price = ''
+
+  if (priceJSON) {
+    try {
+      const parsed = JSON.parse(priceJSON)?.data[0];
+      const priceValue = parsed.unit_amount
+      const priceType = parsed.type
+      price = `${parsed.currency === 'usd' ? '$' : ''}${(priceValue / 100).toFixed(2)}`;
+      if (priceType === 'recurring') {
+        price += `/${parsed.recurring.interval_count > 1 ? `${parsed.recurring.interval_count} ${parsed.recurring.interval}` : parsed.recurring.interval}`
+      }
+    } catch (e) {
+      console.error(`Cannot parse priceJSON`)
+    }
+  }
+
+  return price
+}
 
 export const Card: React.FC<{
   alignItems?: 'center'
@@ -17,13 +37,14 @@ export const Card: React.FC<{
   const {
     showCategories,
     title: titleFromProps,
-    relationTo,
     doc,
     doc: {
+      id,
       slug,
       title,
       categories,
       meta,
+      priceJSON
     } = {},
     className
   } = props;
@@ -37,6 +58,12 @@ export const Card: React.FC<{
   const titleToUse = titleFromProps || title;
   const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
   const href = `/products/${slug}`;
+
+  const [price, setPrice] = useState(() => priceFromJSON(priceJSON))
+
+  useEffect(() => {
+    setPrice(priceFromJSON(priceJSON))
+  }, [priceJSON])
 
   return (
     <div
@@ -107,7 +134,7 @@ export const Card: React.FC<{
           )}
         </div>
       )}
-      <AddToCartButton product={doc} />
+      <Price product={doc} />
     </div>
   )
 }

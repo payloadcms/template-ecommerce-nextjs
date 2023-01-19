@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext, useEffect, useCallback } from 'react';
+import React, { useState, createContext, useContext, useEffect, useCallback, useRef } from 'react';
 import { User } from '../../payload-types';
 
 type Login = (args: { email: string; password: string }) => Promise<void>;
@@ -10,12 +10,17 @@ type AuthContext = {
   setUser: (user: User | null) => void;
   logout: Logout;
   login: Login;
+  status: undefined | 'loggedOut' | 'loggedIn';
 };
 
 const Context = createContext({} as AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>();
+
+  // used to track the single event of logging in or logging out
+  // useful for `useEffect` hooks that should only run once
+  const [status, setStatus] = useState<undefined | 'loggedOut' | 'loggedIn'>();
 
   const login = useCallback<Login>(async (args) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/users/login`, {
@@ -30,6 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (res.ok) {
       const json = await res.json();
       setUser(json.user);
+      setStatus('loggedIn');
     } else {
       throw new Error('Invalid login');
     }
@@ -42,6 +48,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     if (res.ok) {
+      setStatus('loggedOut');
       setUser(null);
     } else {
       throw new Error('There was a problem while logging out.');
@@ -67,6 +74,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser,
         login,
         logout,
+        status
       }}
     >
       {children}

@@ -1,11 +1,8 @@
-import React, { createContext, useContext, useCallback, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useCallback, useState, useEffect, useReducer } from 'react';
 import { Product, User } from '../../payload-types';
-import canUseDOM from '../../utilities/canUseDOM';
 import { useAuth } from '../Auth';
+import { CartItem, cartReducer } from './reducer';
 // import { useNotifications } from '../Notifications';
-
-type CartType = User['cart'];
-type CartItem = User['cart']['items'][0];
 
 export type CartContext = {
   cart: User['cart']
@@ -13,7 +10,11 @@ export type CartContext = {
   deleteItemFromCart: (product: Product) => void
   cartIsEmpty: boolean
   clearCart: () => void
-  isProductInCart: (product: Product) => boolean
+  isProductInCart: (product: Product) => boolean,
+  cartTotal: {
+    formatted: string
+    raw: number
+  }
 }
 
 const Context = createContext({} as CartContext);
@@ -26,95 +27,73 @@ export const CartProvider = (props) => {
   // const { setTimedNotification } = useNotifications();
   const { children } = props;
 
-  const [cart, setCart] = useState<CartType>(() => {
-    return ({
-      items: [],
-      ...canUseDOM ? JSON.parse(localStorage.getItem('cart')) : {},
-    })
+  const [cart, dispatchCart] = useReducer(cartReducer, {
+    items: []
   });
 
-  const { user } = useAuth();
+  const { user, status: authStatus } = useAuth();
+  const [total, setTotal] = useState<{
+    formatted: string
+    raw: number
+  }>();
 
   const [cartIsEmpty, setCartIsEmpty] = useState(true);
-  const syncCart = useRef(true); // prevents sync from looping infinitely
-  const hasLoggedIn = useRef(false); // used to fire an effect only once upon log out
 
-  // clear the cart from local state after logging out
   useEffect(() => {
-    if (hasLoggedIn.current === true && !user) {
-      syncCart.current = false;
-      setCart({
-        items: []
+    if (authStatus === 'loggedIn') {
+      // merge the users cart with the local cart upon logging in
+      dispatchCart({
+        type: 'MERGE_CART',
+        payload: user.cart
       })
     }
-  }, [user])
+
+    if (authStatus === 'loggedOut') {
+      // clear the cart from local state after logging out
+      dispatchCart({
+        type: 'CLEAR_CART'
+      })
+    }
+  }, [user, authStatus])
 
   // every time the cart changes, determine whether to save to local storage or Payload
-  // when logged in, merge and sync the existing cart from local storage to Payload
+  // upon logging in, merge and sync the existing local cart to Payload
   useEffect(() => {
-    console.log('effect', user);
+    const cartJSON = JSON.stringify({
+      ...cart,
+      items: cart.items.map((item) => ({
+        ...item,
+        // flatten relationship to product
+        product: typeof item.product === 'string' ? item.product : item.product.id
+      }))
+    });
+
     if (user) {
-      hasLoggedIn.current = true;
+      try {
+        const syncCartToPayload = async () => {
+          const req = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/users/${user.id}`, {
+            // Make sure to include cookies with fetch
+            credentials: 'include',
+            method: 'PATCH',
+            body: JSON.stringify({
+              cart: cartJSON
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
 
-      if (syncCart.current) {
-        syncCart.current = false;
-        const syncedItems: CartItem[] = [
-          ...cart?.items || [],
-          ...user?.cart?.items || []
-        ].reduce((acc, item) => {
-          // remove duplicates
-          const productId = typeof item.product === 'string' ? item.product : item.product.id;
-          const indexInAcc = acc.findIndex(({ product }) => typeof product === 'string' ? product === productId : product.id === productId);
-          if (indexInAcc > -1) {
-            acc[indexInAcc] = {
-              ...acc[indexInAcc],
-              quantity: acc[indexInAcc].quantity + item.quantity
-            }
-          } else {
-            acc.push(item)
+          if (req.ok) {
+            localStorage.setItem('cart', '[]');
           }
-          return acc;
-        }, [])
-
-        const syncedCart = {
-          ...cart,
-          items: syncedItems
         }
 
-        setCart(syncedCart);
-
-        try {
-          const syncCartToPayload = async () => {
-            const req = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/users/${user.id}`, {
-              // Make sure to include cookies with fetch
-              credentials: 'include',
-              method: 'PATCH',
-              body: JSON.stringify({
-                cart: {
-                  ...syncedCart,
-                  items: syncedCart.items.map((item) => ({
-                    ...item,
-                    product: typeof item.product === 'string' ? item.product : item.product.id // flatten relationship
-                  }))
-                }
-              }),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            })
-
-            if (req.ok) {
-              localStorage.setItem('cart', '[]');
-            }
-          }
-
-          syncCartToPayload()
-        } catch (e) {
-          console.error('Error while syncing cart to Payload.')
-        }
+        syncCartToPayload()
+      } catch (e) {
+        console.error('Error while syncing cart to Payload.')
       }
     } else {
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem('cart', cartJSON);
     }
   }, [user, cart])
 
@@ -129,52 +108,40 @@ export const CartProvider = (props) => {
 
   // this method can be used to add new items AND update existing ones
   const addItemToCart = useCallback((incomingItem) => {
-    const indexInCart = cart.items.findIndex(({ product }) => typeof product === 'string' ? product === incomingItem.product.id : product.id === incomingItem.product.id);
-    let withAddedItem = { ...cart };
-
-    if (indexInCart === -1) {
-      withAddedItem = {
-        ...cart,
-        items: [
-          ...cart?.items || [],
-          incomingItem,
-        ],
-      };
-    }
-
-    if (indexInCart > -1) {
-      withAddedItem.items[indexInCart] = {
-        ...withAddedItem.items[indexInCart],
-        quantity: withAddedItem.items[indexInCart].quantity + 1
-      }
-    }
-
-    syncCart.current = true;
-    setCart(withAddedItem);
-  }, [cart]);
+    dispatchCart({
+      type: 'ADD_ITEM',
+      payload: incomingItem
+    })
+  }, []);
 
   const deleteItemFromCart = useCallback((incomingProduct: Product) => {
-    const withDeletedItem = { ...cart };
-    const indexInCart = cart.items.findIndex(({ product }) => typeof product === 'string' ? product === incomingProduct.id : product.id === incomingProduct.id);
-    if (indexInCart > -1) {
-      withDeletedItem.items.splice(indexInCart, 1)
-      syncCart.current = true;
-      setCart(withDeletedItem)
-    }
-  }, [cart]);
+   dispatchCart({
+      type: 'DELETE_ITEM',
+      payload: incomingProduct
+   })
+  }, []);
 
   const clearCart = useCallback(() => {
-    const emptyCart = {
-      items: []
-    };
-
-    syncCart.current = true;
-    setCart(emptyCart);
+    dispatchCart({
+      type: 'CLEAR_CART'
+    })
   }, []);
 
   useEffect(() => {
     const isEmpty = !arrayHasItems(cart.items);
     setCartIsEmpty(isEmpty);
+
+    const newTotal = cart.items.reduce((acc, item) => {
+      return acc + (typeof item.product === 'object' ? JSON.parse(item.product.priceJSON)?.data?.[0]?.unit_amount * item.quantity : 0)
+    }, 0);
+
+    setTotal({
+      formatted: (newTotal / 100).toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }),
+      raw: newTotal
+    })
   }, [cart]);
 
   return (
@@ -185,7 +152,8 @@ export const CartProvider = (props) => {
         deleteItemFromCart,
         cartIsEmpty,
         clearCart,
-        isProductInCart
+        isProductInCart,
+        cartTotal: total
       }}
     >
       { children && children}
