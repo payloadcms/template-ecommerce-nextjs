@@ -73,5 +73,5 @@
 
 .loading,
 .error {
-  margin-top: calc(var(--block-padding) / var(--base));
+  margin-top: calc(var(--block-padding) - var(--base));
 }

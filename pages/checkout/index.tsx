@@ -87,7 +87,7 @@ const CheckoutPage: React.FC<{
     <Gutter className={classes.checkoutPage}>
       {!clientSecret && !error && (
         <div className={classes.loading}>
-          {'Loading...'}
+          Loading...
         </div>
       )}
       {!clientSecret && error && (

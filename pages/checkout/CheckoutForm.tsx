@@ -3,6 +3,7 @@ import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import { useCallback } from "react";
 import { Button } from "../../components/Button";
 import classes from './index.module.scss';
+import { useCart } from '../../providers/Cart';
 
 export const CheckoutForm: React.FC<{}> = () => {
   const stripe = useStripe();
