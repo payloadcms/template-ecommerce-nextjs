@@ -2,11 +2,12 @@ import { gql } from '@apollo/client'
 import { loadStripe } from '@stripe/stripe-js'
 import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button } from '../../components/Button'
 import { Gutter } from '../../components/Gutter'
 import { getApolloClient } from '../../graphql'
 import { FOOTER, HEADER, SETTINGS } from '../../graphql/globals'
+import { useCart } from '../../providers/Cart'
 
 import classes from './index.module.scss';
 
@@ -16,21 +17,30 @@ const stripePromise = loadStripe(apiKey);
 const OrderConfirmation: React.FC = () => {
   const [message, setMessage] = useState(null);
   const { query } = useRouter();
+  const { clearCart } = useCart();
+  const hasRetrievedPaymentIntent =  useRef(false);
 
   useEffect(() => {
+    if (hasRetrievedPaymentIntent.current) return;
+    hasRetrievedPaymentIntent.current = true;
+
     const doSomething = async () => {
       const stripe = await stripePromise;
 
       if (!stripe) return;
 
-      const clientSecret = new URLSearchParams(window.location.search).get('payment_intent_client_secret');
+      const params = new URLSearchParams(window.location.search);
+      const clientSecret = params.get('payment_intent_client_secret');
+      const shouldClearCart = params.get('clear_cart');
       const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
 
       switch (paymentIntent.status) {
         case 'succeeded':
+          if (shouldClearCart) clearCart();
           setMessage('Success! Payment received.');
           break;
         case 'processing':
+          if (shouldClearCart) clearCart();
           setMessage("Payment processing. We'll update you when payment is received.");
           break;
         case 'requires_payment_method':
@@ -43,7 +53,7 @@ const OrderConfirmation: React.FC = () => {
     };
 
     doSomething();
-  }, []);
+  }, [clearCart]);
 
   return (
     <Gutter className={classes.confirmationPage}>

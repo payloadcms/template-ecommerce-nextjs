@@ -3,25 +3,45 @@ import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import { useCallback } from "react";
 import { Button } from "../../components/Button";
 import classes from './index.module.scss';
-import { useCart } from '../../providers/Cart';
 
 export const CheckoutForm: React.FC<{}> = () => {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSubmit = useCallback(async(e) => {
     e.preventDefault();
 
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${process.env.NEXT_PUBLIC_APP_URL}/order-confirmation`,
-      },
-    });
+    setIsLoading(true);
 
-    if (error) {
-      setError(error.message);
+    try {
+      const {
+        error,
+        // paymentIntent,
+      } = await stripe.confirmPayment({
+        elements,
+        // redirect: 'if_required',
+        confirmParams: {
+          return_url: `${process.env.NEXT_PUBLIC_APP_URL}/order-confirmation?clear_cart=true`,
+        },
+      });
+
+      if (error) {
+        setError(error.message);
+        setIsLoading(false);
+      }
+
+      // Alternatively, you could handle the redirect yourself if `redirect: 'if_required'` is set
+      // but this doesn't work currently because if you clear the cart while in the checkout
+      // you will be redirected to the cart page before this redirect happens
+      // if (paymentIntent) {
+      //   clearCart();
+      //   Router.push(`/order-confirmation?payment_intent_client_secret=${paymentIntent.client_secret}`);
+      // }
+    } catch (err) {
+      setError('Something went wrong.');
+      setIsLoading(false);
     }
   }, [stripe, elements])
 
@@ -35,10 +55,10 @@ export const CheckoutForm: React.FC<{}> = () => {
       <PaymentElement />
       <Button
         className={classes.checkoutButton}
-        label="Place order"
+        label={isLoading ? 'Loading...' : 'Checkout'}
         type="submit"
         appearance='primary'
-        disabled={!stripe}
+        disabled={!stripe || isLoading}
       />
     </form>
   )
