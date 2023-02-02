@@ -7,7 +7,7 @@ import { META } from "./meta";
 
 export const PAGES = gql`
   query Pages {
-    Pages(limit: 300) {
+    Pages(limit: 300, where: { slug: { not_equals: "cart" } })  {
       docs {
         slug
       }
@@ -17,7 +17,7 @@ export const PAGES = gql`
 
 export const PAGE = gql`
   query Page($slug: String ) {
-    Pages(where: { slug: { equals: $slug}}) {
+    Pages(where: { AND: [{ slug: { equals: $slug }}] }) {
       docs {
         id
         title

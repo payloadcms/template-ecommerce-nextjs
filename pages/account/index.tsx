@@ -95,16 +95,16 @@ const Account: React.FC = () => {
       </form>
       <hr className={classes.hr} />
       <h2>
-        Subscriptions
+        Purchases
       </h2>
       <div>
-        {user?.subscriptions?.length > 0 ? user.subscriptions.map((subscription) => (
-          <div key={subscription.id}>
-            <h3>{typeof subscription.product === 'object' ? subscription.product.title : subscription.product}</h3>
+        {user?.purchases?.length > 0 ? user.purchases.map((purchase) => (
+          <div key={purchase.id}>
+            <h3>{typeof purchase.product === 'object' ? purchase.product.title : purchase.product}</h3>
           </div>
         )) : (
           <div>
-            You have no subscriptions.
+            You have no purchases.
           </div>
         )}
       </div>

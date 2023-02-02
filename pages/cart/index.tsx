@@ -7,24 +7,23 @@ import { useCart } from '../../providers/Cart';
 import { Media } from '../../components/Media';
 import { RemoveFromCartButton } from '../../components/RemoveFromCartButton';
 import Link from 'next/link';
-import { CART, FOOTER, HEADER, SETTINGS } from '../../graphql/globals';
-import { gql } from '@apollo/client';
-import { CartPage as CartPageType, Settings } from '../../payload-types';
+import { Page, Settings } from '../../payload-types';
 import Blocks from '../../components/Blocks';
 import { Hero } from '../../components/Hero';
 import { useAuth } from '../../providers/Auth';
 import { Button } from '../../components/Button';
 import { Price } from '../../components/Price';
+import { PAGE } from '../../graphql/pages';
 
 const CartPage: React.FC<{
   settings: Settings
-  cartPage: CartPageType
+  page: Page
 }> = (props) => {
   const {
     settings: {
       shopPage,
     },
-    cartPage: {
+    page: {
       hero,
       layout
     }
@@ -50,19 +49,15 @@ const CartPage: React.FC<{
               <Fragment>
                 {' '}
                 <Link href={`/${shopPage.slug}`}>
-                  Continue shopping
+                  Click here
                 </Link>
-              </Fragment>
-            )}
-            {typeof shopPage === 'object' && shopPage?.slug && !user && (
-              <Fragment>
-                {' or'}
+                {` to shop.`}
               </Fragment>
             )}
             {!user && (
               <Fragment>
                 {' '}
-                <Link href={`/login`}>
+                <Link href={`/login?redirect=%2Fcart`}>
                   Log in
                 </Link>
                 {` to view a saved cart.`}
@@ -70,14 +65,14 @@ const CartPage: React.FC<{
             )}
           </div>
         )}
-        {!cartIsEmpty && (
+        {cartIsEmpty === false && (
           <div className={classes.items}>
             <div className={classes.itemsTotal}>
               {`There ${cart.items.length === 1 ? 'is' : 'are'} ${cart.items.length} item${cart.items.length === 1 ? '' : 's'} in your cart.`}
               {!user && (
                 <Fragment>
                   {' '}
-                  <Link href={`/login`}>
+                  <Link href={`/login?redirect=%2Fcart`}>
                     Log in
                   </Link>
                   {` to save your progress.`}
@@ -163,9 +158,7 @@ const CartPage: React.FC<{
           </div>
         )}
       </Gutter>
-      <Blocks
-        blocks={layout}
-      />
+      <Blocks blocks={layout} />
     </Fragment>
   );
 };
@@ -174,22 +167,26 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = getApolloClient();
 
   const { data } = await apolloClient.query({
-    query: gql(`
-      query {
-        ${SETTINGS}
-        ${HEADER}
-        ${FOOTER}
-        ${CART}
-      }
-    `)
+    query: PAGE,
+    variables: {
+      slug: "cart",
+    },
   });
+
+  if (!data.Pages.docs[0]) {
+    return {
+      notFound: true,
+    }
+  }
 
   return {
     props: {
+      page: data?.Pages?.docs?.[0] || null,
       header: data?.Header || null,
       footer: data?.Footer || null,
-      cartPage: data?.CartPage || null,
       settings: data?.Settings || null,
+      collection: 'pages',
+      id: data?.Pages?.docs?.[0]?.id || null,
     },
   };
 }

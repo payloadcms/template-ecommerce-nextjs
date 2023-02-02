@@ -62,6 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         credentials: 'include',
       }).then((req) => req.json());
       setUser(result.user || null);
+      setStatus(result.user ? 'loggedIn' : undefined)
     };
 
     fetchMe();

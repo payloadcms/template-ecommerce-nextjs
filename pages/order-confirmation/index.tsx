@@ -52,8 +52,6 @@ const OrderConfirmation: React.FC = () => {
         {`Status: ${message}`}
         <br />
         {`Stripe Payment ID: ${query.payment_intent}`}
-        <br />
-        {`Payload Order ID: ${query.order_id}`}
       </p>
       <Button
         href="/orders"

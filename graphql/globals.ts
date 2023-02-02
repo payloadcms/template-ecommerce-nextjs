@@ -44,28 +44,3 @@ query Settings {
   ${SETTINGS}
 }
 `
-
-export const CART = `
-  CartPage {
-    hero {
-      type
-      richText
-      links {
-        link ${LINK_FIELDS()}
-      }
-      ${MEDIA}
-    }
-    layout {
-      ${CALL_TO_ACTION}
-      ${CONTENT}
-      ${MEDIA_BLOCK}
-      ${ARCHIVE_BLOCK}
-    }
-  }
-`;
-
-export const CART_QUERY = gql`
-query CartPage {
-  ${CART}
-}
-`

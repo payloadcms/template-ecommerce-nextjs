@@ -43,7 +43,7 @@ const CheckoutPage: React.FC<{
 
   useEffect(() => {
     if (user === null) {
-      router.push('/account/login')
+      router.push('/account/login?unauthorized=account')
     }
   }, [router, user])
 
@@ -59,25 +59,16 @@ const CheckoutPage: React.FC<{
 
       const makeIntent = async () => {
         try {
-          const req = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/payment-intent`, {
+          const req = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/checkout`, {
             method: 'POST',
             credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              user,
-              cart
-            })
           });
 
           const res = await req.json();
 
           if (res.error) {
             setError(res.error)
-          }
-
-          if (res.client_secret) {
+          } else if (res.client_secret) {
             setError(null);
             setClientSecret(res.client_secret);
           }
@@ -94,9 +85,17 @@ const CheckoutPage: React.FC<{
 
   return (
     <Gutter className={classes.checkoutPage}>
-      {!clientSecret && (
-        <div>
+      {!clientSecret && !error && (
+        <div className={classes.loading}>
           {'Loading...'}
+        </div>
+      )}
+      {!clientSecret && error && (
+        <div className={classes.error}>
+          <p>
+            Error:
+          </p>
+          {error}
         </div>
       )}
       {clientSecret && (
@@ -111,9 +110,9 @@ const CheckoutPage: React.FC<{
             This is a self-hosted, secure checkout using Stripe&apos;s Payment Element component. Use credit card number <b>4242 4242 4242 4242</b> with any future date and CVC to create a mock purchase. An order will be generated in the CMS and will appear in your account.
           </p>
           {error && (
-            <div className={classes.error}>
+            <p>
               {error}
-            </div>
+            </p>
           )}
           {cartIsEmpty && (
             <div>

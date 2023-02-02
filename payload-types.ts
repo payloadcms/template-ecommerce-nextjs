@@ -8,23 +8,11 @@
 export interface Config {}
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "header".
+ * via the `definition` "settings".
  */
-export interface Header {
+export interface Settings {
   id: string;
-  navItems: {
-    link: {
-      type?: 'reference' | 'custom';
-      newTab?: boolean;
-      reference: {
-        value: string | Page;
-        relationTo: 'pages';
-      };
-      url: string;
-      label: string;
-    };
-    id?: string;
-  }[];
+  shopPage?: string | Page;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -289,69 +277,7 @@ export interface Product {
   )[];
   stripeProductID?: string;
   priceJSON?: string;
-  paywall: {
-    id?: string;
-  }[];
-  categories?: string[] | Category[];
-  slug?: string;
-  skipSync?: boolean;
-  meta: {
-    title?: string;
-    description?: string;
-    image?: string | Media;
-  };
-  _status?: 'draft' | 'published';
-  createdAt: string;
-  updatedAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer".
- */
-export interface Footer {
-  id: string;
-  navItems: {
-    link: {
-      type?: 'reference' | 'custom';
-      newTab?: boolean;
-      reference: {
-        value: string | Page;
-        relationTo: 'pages';
-      };
-      url: string;
-      label: string;
-    };
-    id?: string;
-  }[];
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "cart-page".
- */
-export interface CartPage {
-  id: string;
-  hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
-    richText: {
-      [k: string]: unknown;
-    }[];
-    links: {
-      link: {
-        type?: 'reference' | 'custom';
-        newTab?: boolean;
-        reference: {
-          value: string | Page;
-          relationTo: 'pages';
-        };
-        url: string;
-        label: string;
-        appearance?: 'default' | 'primary' | 'secondary';
-      };
-      id?: string;
-    }[];
-    media: string | Media;
-  };
-  layout: (
+  paywall: (
     | {
         ctaBackgroundColor?: 'white' | 'black';
         richText: {
@@ -440,14 +366,57 @@ export interface CartPage {
         blockType: 'archive';
       }
   )[];
+  categories?: string[] | Category[];
+  slug?: string;
+  skipSync?: boolean;
+  meta: {
+    title?: string;
+    description?: string;
+    image?: string | Media;
+  };
+  _status?: 'draft' | 'published';
+  createdAt: string;
+  updatedAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "settings".
+ * via the `definition` "header".
  */
-export interface Settings {
+export interface Header {
   id: string;
-  shopPage?: string | Page;
+  navItems: {
+    link: {
+      type?: 'reference' | 'custom';
+      newTab?: boolean;
+      reference: {
+        value: string | Page;
+        relationTo: 'pages';
+      };
+      url: string;
+      label: string;
+    };
+    id?: string;
+  }[];
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: string;
+  navItems: {
+    link: {
+      type?: 'reference' | 'custom';
+      newTab?: boolean;
+      reference: {
+        value: string | Page;
+        relationTo: 'pages';
+      };
+      url: string;
+      label: string;
+    };
+    id?: string;
+  }[];
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -457,6 +426,7 @@ export interface User {
   id: string;
   name?: string;
   roles?: ('admin' | 'customer')[];
+  purchases?: string[] | Product[];
   stripeCustomerID?: string;
   cart: {
     items: {
@@ -467,15 +437,6 @@ export interface User {
     createdOn?: string;
     lastModified?: string;
   };
-  subscriptions: {
-    stripeSubscriptionID?: string;
-    stripeProductID?: string;
-    product?: string | Product;
-    status?: 'active' | 'canceled' | 'incomplete' | 'incomplete_expired' | 'past_due' | 'trialing' | 'unpaid';
-    createdOn?: string;
-    lastModified?: string;
-    id?: string;
-  }[];
   skipSync?: boolean;
   email?: string;
   resetPasswordToken?: string;
@@ -494,131 +455,19 @@ export interface Order {
   orderedBy: {
     user?: string | User;
     name?: string;
-    roles?: ('admin' | 'customer')[];
+    email?: string;
     stripeCustomerID?: string;
-    cart: {
-      items: {
-        product?: string | Product;
-        quantity?: number;
-        id?: string;
-      }[];
-      createdOn?: string;
-      lastModified?: string;
-    };
-    subscriptions: {
-      stripeSubscriptionID?: string;
-      stripeProductID?: string;
-      product?: string | Product;
-      status?: 'active' | 'canceled' | 'incomplete' | 'incomplete_expired' | 'past_due' | 'trialing' | 'unpaid';
-      createdOn?: string;
-      lastModified?: string;
-      id?: string;
-    }[];
-    skipSync?: boolean;
   };
   products: {
     product?: string | Product;
-    title: string;
-    publishedDate?: string;
-    layout: (
-      | {
-          ctaBackgroundColor?: 'white' | 'black';
-          richText: {
-            [k: string]: unknown;
-          }[];
-          links: {
-            link: {
-              type?: 'reference' | 'custom';
-              newTab?: boolean;
-              reference: {
-                value: string | Page;
-                relationTo: 'pages';
-              };
-              url: string;
-              label: string;
-              appearance?: 'primary' | 'secondary';
-            };
-            id?: string;
-          }[];
-          id?: string;
-          blockName?: string;
-          blockType: 'cta';
-        }
-      | {
-          contentBackgroundColor?: 'white' | 'black';
-          columns: {
-            size?: 'oneThird' | 'half' | 'twoThirds' | 'full';
-            richText: {
-              [k: string]: unknown;
-            }[];
-            enableLink?: boolean;
-            link: {
-              type?: 'reference' | 'custom';
-              newTab?: boolean;
-              reference: {
-                value: string | Page;
-                relationTo: 'pages';
-              };
-              url: string;
-              label: string;
-              appearance?: 'default' | 'primary' | 'secondary';
-            };
-            id?: string;
-          }[];
-          id?: string;
-          blockName?: string;
-          blockType: 'content';
-        }
-      | {
-          mediaBlockBackgroundColor?: 'white' | 'black';
-          position?: 'default' | 'fullscreen';
-          media: string | Media;
-          id?: string;
-          blockName?: string;
-          blockType: 'mediaBlock';
-        }
-      | {
-          introContent: {
-            [k: string]: unknown;
-          }[];
-          populateBy?: 'collection' | 'selection';
-          relationTo?: 'products';
-          categories?: string[] | Category[];
-          limit?: number;
-          selectedDocs?:
-            | {
-                value: string;
-                relationTo: 'products';
-              }[]
-            | {
-                value: Product;
-                relationTo: 'products';
-              }[];
-          populatedDocs?:
-            | {
-                value: string;
-                relationTo: 'products';
-              }[]
-            | {
-                value: Product;
-                relationTo: 'products';
-              }[];
-          populatedDocsTotal?: number;
-          id?: string;
-          blockName?: string;
-          blockType: 'archive';
-        }
-    )[];
-    stripeProductID?: string;
+    title?: string;
     priceJSON?: string;
-    paywall: {
-      id?: string;
-    }[];
-    categories?: string[] | Category[];
-    slug?: string;
-    skipSync?: boolean;
+    stripeProductID?: string;
+    quantity?: number;
     id?: string;
   }[];
+  stripeInvoiceID?: string;
+  stripePaymentIntentID?: string;
   createdAt: string;
   updatedAt: string;
 }
