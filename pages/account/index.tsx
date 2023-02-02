@@ -9,6 +9,7 @@ import { GetStaticProps } from 'next';
 import { getApolloClient } from '../../graphql';
 import { HEADER_QUERY } from '../../graphql/globals';
 import { Button } from '../../components/Button';
+import Link from 'next/link';
 
 type FormData = {
   email: string;
@@ -20,12 +21,14 @@ const Account: React.FC = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const { user, setUser } = useAuth();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm<FormData>();
+
   const router = useRouter();
 
   const onSubmit = useCallback(async (data: FormData) => {
@@ -72,6 +75,8 @@ const Account: React.FC = () => {
     }
   }, [user, router, reset]);
 
+  console.log('user', user)
+
   useEffect(() => {
     if (typeof router.query.success === 'string') {
       setSuccess(router.query.success);
@@ -95,14 +100,26 @@ const Account: React.FC = () => {
       </form>
       <hr className={classes.hr} />
       <h2>
-        Purchases
+        Purchased Products
       </h2>
       <div>
-        {user?.purchases?.length > 0 ? user.purchases.map((purchase) => (
-          <div key={purchase.id}>
-            <h3>{typeof purchase.product === 'object' ? purchase.product.title : purchase.product}</h3>
-          </div>
-        )) : (
+        {user?.purchases?.length > 0 ? user.purchases.map((purchase) => {
+          if (typeof purchase === 'string') {
+            return (
+              <div key={purchase}>
+                <h4>{purchase}</h4>
+              </div>
+            )
+          }
+          return (
+            <Link
+              key={purchase.id}
+              href={`/products/${purchase.slug}`}
+            >
+              <h4>{purchase.title}</h4>
+            </Link>
+          )
+        }) : (
           <div>
             You have no purchases.
           </div>

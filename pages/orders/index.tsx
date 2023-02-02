@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../providers/Auth';
-import classes from './index.module.css';
-import { Input } from '../../components/Input';
+import classes from './index.module.scss';
 import { useRouter } from 'next/router';
 import { Gutter } from '../../components/Gutter';
 import { GetStaticProps } from 'next';
@@ -9,17 +8,12 @@ import { getApolloClient } from '../../graphql';
 import { HEADER_QUERY } from '../../graphql/globals';
 import { Button } from '../../components/Button';
 import { Order } from '../../payload-types';
-
-type FormData = {
-  email: string;
-  firstName: string;
-  lastName: string;
-};
+import Link from 'next/link';
 
 const Orders: React.FC = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
 
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>();
@@ -70,7 +64,11 @@ const Orders: React.FC = () => {
               key={order.id}
               className={classes.item}
             >
-              {order.id}
+              <Link
+                href={`/orders/${order.id}`}
+              >
+                {order.id}
+              </Link>
             </li>
           ))}
         </ul>

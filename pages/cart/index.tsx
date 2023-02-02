@@ -112,9 +112,11 @@ const CartPage: React.FC<{
                         )}
                       </div>
                       <div className={classes.rowContent}>
-                        <h6 className={classes.title}>
-                          {title}
-                        </h6>
+                        <Link href={`/products/${product.slug}`}>
+                          <h6 className={classes.title}>
+                            {title}
+                          </h6>
+                        </Link>
                         <label>
                           Quantity
                           &nbsp;
