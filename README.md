@@ -1,6 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) that fetches data from [Payload CMS](https://payloadcms.com) using [GraphQL](https://graphql.org).
-
-This repo is was made explicitly for Payload's [E-Commerce Template](https://github.com/payloadcms/template-ecommerce).
+This is a [Next.js](https://nextjs.org/) app made explicitly for Payload's [E-Commerce Template](https://github.com/payloadcms/template-ecommerce).
 
 Key features:
 
@@ -11,10 +9,8 @@ Key features:
 - Full checkout workflow
 - Pre-made layout building blocks
 - Stripe integration
-- SEO enabled
-- One-time purchases
-- Subscriptions
-- Paywall
+- Complete SEO solution
+- Paywall support
 
 ## Getting Started
 

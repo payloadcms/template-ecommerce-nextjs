@@ -2,17 +2,20 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { Product } from '../../payload-types';
 import { useCart } from '../../providers/Cart';
+import { Button, Props } from '../Button';
 import classes from './index.module.scss';
 
 export const AddToCartButton: React.FC<{
   product: Product
   quantity?: number
   className?: string
+  appearance?: Props['appearance']
 }> = (props) => {
   const {
     product,
     quantity = 1,
-    className
+    className,
+    appearance = 'primary'
   } = props;
 
   const { cart, addItemToCart, isProductInCart } = useCart();
@@ -25,15 +28,19 @@ export const AddToCartButton: React.FC<{
 
   if (showInCart) {
     return (
-      <Link href="/cart">
-        View in cart
-      </Link>
+      <Button
+        href="/cart"
+        label="View in cart"
+        el="link"
+        appearance={appearance}
+      />
     )
   }
 
   return (
-    <button
+    <Button
       type="button"
+      appearance={appearance}
       onClick={() => {
         addItemToCart({
           product,
@@ -44,8 +51,7 @@ export const AddToCartButton: React.FC<{
         className,
         classes.addToCartButton
       ].filter(Boolean).join(' ')}
-    >
-      Add to cart
-    </button>
+      label="Add to cart"
+    />
   );
 };

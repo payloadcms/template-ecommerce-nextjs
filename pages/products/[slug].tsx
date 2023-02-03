@@ -26,11 +26,12 @@ export const Product: React.FC<{
 
     return (
       <React.Fragment>
-        <ProductHero
-          product={product}
-        />
+        <ProductHero product={product} />
         <Blocks blocks={layout} />
-        <PaywallBlocks productSlug={query.slug as string} />
+        <PaywallBlocks
+          productSlug={query.slug as string}
+          disableTopPadding
+        />
       </React.Fragment>
     )
   }

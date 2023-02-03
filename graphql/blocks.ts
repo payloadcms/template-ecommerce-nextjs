@@ -17,7 +17,7 @@ export const CALL_TO_ACTION = `
 export const CONTENT = `
 ...on Content {
   blockType
-  contentBackgroundColor
+  backgroundColor
   columns {
     size
     richText

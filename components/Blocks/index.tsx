@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Page } from '../../payload-types';
 import { toKebabCase } from '../../utilities/toKebabCase';
 import { BackgroundColor } from '../BackgroundColor';
-import { VerticalPaddingOptions } from '../VerticalPadding';
+import { VerticalPadding, VerticalPaddingOptions } from '../VerticalPadding';
 import { ArchiveBlock } from '../../blocks/ArchiveBlock';
 import { CallToActionBlock } from '../../blocks/CallToAction';
 import { ContentBlock } from '../../blocks/Content';
@@ -37,12 +37,12 @@ export const Blocks: React.FC<{
 
           if (blockType && blockType in blockComponents) {
             const Block = blockComponents[blockType];
-            const backgroundColor = block[`${blockType}BackgroundColor`];
+            const backgroundColor = 'backgroundColor' in block ? block.backgroundColor : undefined;
             const prevBlock = blocks[index - 1];
             const nextBlock = blocks[index + 1];
 
-            const prevBlockBackground = prevBlock?.[`${prevBlock.blockType}BackgroundColor`];
-            const nextBlockBackground = nextBlock?.[`${nextBlock.blockType}BackgroundColor`];
+            const prevBlockBackground = prevBlock?.[`${prevBlock.blockType}`]?.backgroundColor;
+            const nextBlockBackground = nextBlock?.[`${nextBlock.blockType}`]?.backgroundColor;
 
             let paddingTop: VerticalPaddingOptions = 'large';
             let paddingBottom: VerticalPaddingOptions = 'large';
@@ -63,16 +63,19 @@ export const Blocks: React.FC<{
               return (
                 <BackgroundColor
                   key={index}
-                  paddingTop={paddingTop}
-                  paddingBottom={paddingBottom}
                   color={backgroundColor}
                 >
+                  <VerticalPadding
+                    top={paddingTop}
+                    bottom={paddingBottom}
+                  >
                   {/* @ts-ignore */}
                   <Block
                     // @ts-ignore
                     id={toKebabCase(blockName)}
                     {...block}
                   />
+                  </VerticalPadding>
                 </BackgroundColor>
               );
             }

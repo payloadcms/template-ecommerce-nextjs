@@ -7,6 +7,7 @@ import { CMSLink } from '../../components/Link';
 import RichText from '../../components/RichText';
 
 import classes from './index.module.scss';
+import { VerticalPadding } from '../../components/VerticalPadding';
 
 type Props = Extract<Page['layout'][0], { blockType: 'cta' }>
 
@@ -18,7 +19,7 @@ export const CallToActionBlock: React.FC<Props & {
   return (
     <Gutter>
       <BackgroundColor color={oppositeBackgroundColor}>
-        <div className={classes.callToAction}>
+        <VerticalPadding className={classes.callToAction}>
           <Grid>
             <Cell cols={8} colsL={7} colsM={12}>
               <div>
@@ -45,7 +46,7 @@ export const CallToActionBlock: React.FC<Props & {
               </div>
             </Cell>
           </Grid>
-        </div>
+        </VerticalPadding>
       </BackgroundColor>
     </Gutter>
   )

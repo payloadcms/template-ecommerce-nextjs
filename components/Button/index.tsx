@@ -29,7 +29,12 @@ export const Button: React.FC<Props> = ({
   let el = elFromProps;
   const backgroundColor = useBackgroundColor();
   const newTabProps = newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {};
-  const className = [classNameFromProps, classes[`appearance--${appearance}`], classes[`${appearance}--${backgroundColor}`], classes.button].filter(Boolean).join(' ');
+  const className = [
+    classes.button,
+    classNameFromProps,
+    classes[`appearance--${appearance}`],
+    classes[`${appearance}--${backgroundColor}`
+  ], classes.button].filter(Boolean).join(' ');
 
   const content = (
     <div className={classes.content}>
@@ -60,10 +65,7 @@ export const Button: React.FC<Props> = ({
   return (
     <Element
       href={href}
-      className={[
-        className,
-        classes.button
-      ].filter(Boolean).join(' ')}
+      className={className}
       type={type}
       {...newTabProps}
       onClick={onClick}

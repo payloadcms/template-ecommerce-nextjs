@@ -5,9 +5,10 @@ import { useAuth } from '../../providers/Auth';
 import { Blocks } from '../Blocks';
 
 export const PaywallBlocks: React.FC<{
-  productSlug: string
+  productSlug: string,
+  disableTopPadding?: boolean
 }> = (props) => {
-  const { productSlug } = props;
+  const { productSlug, disableTopPadding } = props;
   const { user } = useAuth();
 
   const [isLoading, setIsLoading] = React.useState(false);
@@ -59,6 +60,9 @@ export const PaywallBlocks: React.FC<{
   if (isLoading || !blocks || blocks.length === 0) return null;
 
   return (
-    <Blocks blocks={blocks} />
+    <Blocks
+      blocks={blocks}
+      disableTopPadding={disableTopPadding}
+    />
   )
 };
