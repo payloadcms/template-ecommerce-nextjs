@@ -1,6 +1,6 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
 import React from 'react';
-import Blocks from '../components/Blocks';
+import { Blocks } from '../components/Blocks';
 import { Hero } from '../components/Hero';
 import { getApolloClient } from '../graphql';
 import { PAGE, PAGES } from '../graphql/pages';

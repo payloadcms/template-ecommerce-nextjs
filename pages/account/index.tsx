@@ -13,8 +13,7 @@ import Link from 'next/link';
 
 type FormData = {
   email: string;
-  firstName: string;
-  lastName: string;
+  name: string;
 };
 
 const Account: React.FC = () => {
@@ -69,8 +68,7 @@ const Account: React.FC = () => {
     if (user) {
       reset({
         email: user.email,
-        // firstName: user.firstName,
-        // lastName: user.lastName,
+        name: user.name,
       });
     }
   }, [user, router, reset]);
@@ -88,8 +86,7 @@ const Account: React.FC = () => {
       {success && <div className={classes.success}>{success}</div>}
       <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
         <Input name="email" label="Email Address" required register={register} error={errors.email} />
-        <Input name="firstName" label="First Name" required register={register} error={errors.firstName} />
-        <Input name="lastName" label="Last Name" required register={register} error={errors.lastName} />
+        <Input name="name" label="Name" required register={register} error={errors.name} />
         <Button
           type="submit"
           label="Update account"

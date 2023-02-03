@@ -1,5 +1,5 @@
 {
-  "name": "ecommerce-example-website",
+  "name": "@payloadcms/template-ecommerce-website",
   "version": "0.1.0",
   "private": true,
   "scripts": {

@@ -8,7 +8,7 @@ import { Media } from '../../components/Media';
 import { RemoveFromCartButton } from '../../components/RemoveFromCartButton';
 import Link from 'next/link';
 import { Page, Settings } from '../../payload-types';
-import Blocks from '../../components/Blocks';
+import { Blocks } from '../../components/Blocks';
 import { Hero } from '../../components/Hero';
 import { useAuth } from '../../providers/Auth';
 import { Button } from '../../components/Button';
