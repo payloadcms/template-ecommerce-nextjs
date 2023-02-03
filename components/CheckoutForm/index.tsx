@@ -1,7 +1,7 @@
 import React from 'react';
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useCallback } from "react";
-import { Button } from "../../components/Button";
+import { Button } from "../Button";
 import classes from './index.module.scss';
 
 export const CheckoutForm: React.FC<{}> = () => {
@@ -63,3 +63,5 @@ export const CheckoutForm: React.FC<{}> = () => {
     </form>
   )
 }
+
+export default CheckoutForm;

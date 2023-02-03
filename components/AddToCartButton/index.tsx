@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { Product } from '../../payload-types';
-import { CartItem, useCart } from '../../providers/Cart';
+import { useCart } from '../../providers/Cart';
 import classes from './index.module.scss';
 
 export const AddToCartButton: React.FC<{

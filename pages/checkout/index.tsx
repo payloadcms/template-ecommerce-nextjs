@@ -13,7 +13,7 @@ import { Price } from '../../components/Price';
 import { useRouter } from 'next/router';
 import { Settings } from '../../payload-types';
 import Link from 'next/link';
-import { CheckoutForm } from './CheckoutForm';
+import { CheckoutForm } from '../../components/CheckoutForm';
 
 import classes from './index.module.scss';
 
