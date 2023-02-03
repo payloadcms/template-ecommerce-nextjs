@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useCallback, useState, useEffect, useReducer } from 'react';
+import React, { createContext, useContext, useCallback, useState, useEffect, useReducer, use, useRef } from 'react';
 import { Product, User } from '../../payload-types';
 import { useAuth } from '../Auth';
 import { CartItem, cartReducer } from './reducer';
@@ -48,12 +48,13 @@ export const CartProvider = (props) => {
   });
 
   const [cartIsEmpty, setCartIsEmpty] = useState<boolean>()
-  const [hasInitialized, setHasInitialized] = useState(false);
+  const hasInitialized = useRef(false);
 
   // Check local storage for a cart
   // If there is a cart, fetch the products and hydrate the cart
   useEffect(() => {
-    if (!hasInitialized) {
+    if (!hasInitialized.current) {
+      hasInitialized.current = true;
       const syncCartFromLocalStorage = async () => {
         const localCart = localStorage.getItem('cart');
 
@@ -77,17 +78,15 @@ export const CartProvider = (props) => {
             })
           }
         }
-
-        setHasInitialized(true);
       }
       syncCartFromLocalStorage();
     }
-  }, [hasInitialized])
+  }, [])
 
   // authenticate the user and if logged in, merge the user's cart with local state
   // only do this after we have initialized the cart to ensure we don't lose any items
   useEffect(() => {
-    if (!hasInitialized) return
+    if (!hasInitialized.current) return
 
     if (authStatus === 'loggedIn') {
       // merge the user's cart with the local state upon logging in
@@ -103,13 +102,13 @@ export const CartProvider = (props) => {
         type: 'CLEAR_CART'
       })
     }
-  }, [user, authStatus, hasInitialized])
+  }, [user, authStatus])
 
   // every time the cart changes, determine whether to save to local storage or Payload based on authentication status
   // upon logging in, merge and sync the existing local cart to Payload
   useEffect(() => {
     // wait until we have attempted authentication (the user is either an object or `null`)
-    if (!hasInitialized || user === undefined) return
+    if (!hasInitialized.current || user === undefined) return
 
     const flattenedCart = {
       ...cart,
@@ -147,7 +146,7 @@ export const CartProvider = (props) => {
     } else {
       localStorage.setItem('cart', JSON.stringify(flattenedCart));
     }
-  }, [user, cart, hasInitialized])
+  }, [user, cart])
 
   const isProductInCart = useCallback((incomingProduct: Product): boolean => {
     let isInCart = false;

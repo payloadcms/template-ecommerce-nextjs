@@ -1,4 +1,5 @@
 import React, { useState, createContext, useContext, useEffect, useCallback } from 'react'
+import { CART } from '../../graphql/cart'
 import { User } from '../../payload-types'
 
 // eslint-disable-next-line no-unused-vars
@@ -81,7 +82,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           query: `mutation {
               loginUser(email: "${args.email}", password: "${args.password}") {
                 user {
+                  id
                   email
+                  name
+                  ${CART}
                 }
                 exp
               }
@@ -145,6 +149,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                   id
                   email
                   name
+                  ${CART}
                 }
                 exp
               }
@@ -212,7 +217,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           query: `mutation {
               resetPasswordUser(password: "${args.password}", passwordConfirm: "${args.passwordConfirm}", token: "${args.token}") {
                 user {
+                  id
                   email
+                  name
+                  ${CART}
                 }
                 exp
               }

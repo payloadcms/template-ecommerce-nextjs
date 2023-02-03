@@ -33,6 +33,10 @@ export const AddToCartButton: React.FC<{
         label="View in cart"
         el="link"
         appearance={appearance}
+        className={[
+          className,
+          classes.addToCartButton
+        ].filter(Boolean).join(' ')}
       />
     )
   }

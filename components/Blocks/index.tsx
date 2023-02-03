@@ -37,12 +37,12 @@ export const Blocks: React.FC<{
 
           if (blockType && blockType in blockComponents) {
             const Block = blockComponents[blockType];
-            const backgroundColor = 'backgroundColor' in block ? block.backgroundColor : undefined;
+            const backgroundColor = 'backgroundColor' in block ? block.backgroundColor : 'white';
             const prevBlock = blocks[index - 1];
             const nextBlock = blocks[index + 1];
 
-            const prevBlockBackground = prevBlock?.[`${prevBlock.blockType}`]?.backgroundColor;
-            const nextBlockBackground = nextBlock?.[`${nextBlock.blockType}`]?.backgroundColor;
+            const prevBlockBackground = prevBlock?.[`${prevBlock.blockType}`]?.backgroundColor || 'white';
+            const nextBlockBackground = nextBlock?.[`${nextBlock.blockType}`]?.backgroundColor || 'white';
 
             let paddingTop: VerticalPaddingOptions = 'large';
             let paddingBottom: VerticalPaddingOptions = 'large';
@@ -55,8 +55,16 @@ export const Blocks: React.FC<{
               paddingBottom = 'medium';
             }
 
+            if (index === blocks.length - 1) {
+              paddingBottom = 'large';
+            }
+
             if (disableTopPadding && index === 0) {
               paddingTop = 'none';
+            }
+
+            if (!disableTopPadding && index === 0) {
+              paddingTop = 'large';
             }
 
             if (Block) {
