@@ -10,13 +10,12 @@ import { getApolloClient } from '../../graphql';
 import { FOOTER, HEADER, SETTINGS } from '../../graphql/globals';
 import { gql } from '@apollo/client';
 import { Button } from '../../components/Button';
+import { User } from '../../payload-types';
 
-type FormData = {
-  email: string
-  password: string
-  firstName: string
-  lastName: string
-}
+type FormData = Partial<User & {
+  password: string;
+  passwordConfirm: string;
+}>;
 
 const CreateAccount: React.FC = () => {
   const [error, setError] = useState('');
@@ -60,8 +59,8 @@ const CreateAccount: React.FC = () => {
           <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
             <Input name="email" label="Email Address" required register={register} error={errors.email} />
             <Input name="password" type="password" label="Password" required register={register} error={errors.password} />
-            <Input name="firstName" label="First Name" required register={register} error={errors.firstName} />
-            <Input name="lastName" label="Last Name" required register={register} error={errors.lastName} />
+            <Input name="passwordConfirm" type="password" label="Confirm Password" required register={register} error={errors.passwordConfirm} />
+            <Input name="name" label="Name" required register={register} error={errors.name} />
             <Button
               type="submit"
               label="Create account"
