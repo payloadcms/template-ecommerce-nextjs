@@ -19,6 +19,10 @@ export const AdminBar: React.FC<{
 
   const { user } = useAuth()
 
+  const isAdmin = user?.roles?.includes('admin')
+
+  if (!isAdmin) return null
+
   return (
     <div
       className={[

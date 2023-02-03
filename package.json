@@ -1,5 +1,5 @@
 {
-  "name": "@payloadcms/template-ecommerce-website",
+  "name": "@payloadcms/template-ecommerce-nextjs",
   "version": "0.1.0",
   "private": true,
   "scripts": {

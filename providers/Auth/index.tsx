@@ -86,6 +86,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                   email
                   name
                   ${CART}
+                  roles
                 }
                 exp
               }
@@ -150,6 +151,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                   email
                   name
                   ${CART}
+                  roles
                 }
                 exp
               }
@@ -221,6 +223,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                   email
                   name
                   ${CART}
+                  roles
                 }
                 exp
               }

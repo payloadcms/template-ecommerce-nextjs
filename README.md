@@ -7,8 +7,10 @@ Key features:
 - Complete shopping experience
 - Full shopping cart implementation
 - Full checkout workflow
-- Pre-made layout building blocks
 - Stripe integration
+- Account dashboard
+- Pre-made layout building blocks
+- [Payload Admin Bar](https://github.com/payloadcms/payload-admin-bar)
 - Complete SEO solution
 - Paywall support
 
