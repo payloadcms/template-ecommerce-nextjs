@@ -75,8 +75,6 @@ const Account: React.FC = () => {
     }
   }, [user, router, reset]);
 
-  console.log('user', user)
-
   useEffect(() => {
     if (typeof router.query.success === 'string') {
       setSuccess(router.query.success);

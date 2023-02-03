@@ -1,23 +1,27 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
 import React from 'react';
 import { PRODUCT, PRODUCTS } from '../../graphql/products';
-import { Product } from '../../payload-types';
-import Blocks from '../../components/Blocks';
-import { Hero } from '../../components/Hero';
+import { Product as ProductType } from '../../payload-types';
+import { Blocks } from '../../components/Blocks';
 import { getApolloClient } from '../../graphql';
 import { ProductHero } from '../../components/Hero/Product';
+import { useRouter } from 'next/router';
+import { PaywallBlocks } from '../../components/PaywallBlocks';
 
-const ProductTemplate: React.FC<{
-  product: Product
+export const Product: React.FC<{
+  product: ProductType
   preview?: boolean
 }> = (props) => {
   const {
     product
   } = props;
 
+  const { query } = useRouter();
+
   if (product) {
     const {
       layout,
+      paywall
     } = product;
 
     return (
@@ -26,6 +30,7 @@ const ProductTemplate: React.FC<{
           product={product}
         />
         <Blocks blocks={layout} />
+        <PaywallBlocks productSlug={query.slug as string} />
       </React.Fragment>
     )
   }
@@ -73,4 +78,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 }
 
-export default ProductTemplate;
+export default Product

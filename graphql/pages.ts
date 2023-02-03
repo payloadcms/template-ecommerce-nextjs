@@ -30,6 +30,7 @@ export const PAGE = gql`
           ${MEDIA}
         }
         layout {
+          ${CONTENT}
           ${CALL_TO_ACTION}
           ${CONTENT}
           ${MEDIA_BLOCK}

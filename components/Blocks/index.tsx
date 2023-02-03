@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { CartPage, Page } from '../../payload-types';
+import { Page } from '../../payload-types';
 import { toKebabCase } from '../../utilities/toKebabCase';
 import { BackgroundColor } from '../BackgroundColor';
 import { VerticalPaddingOptions } from '../VerticalPadding';
@@ -15,8 +15,8 @@ const blockComponents = {
   archive: ArchiveBlock
 }
 
-const Blocks: React.FC<{
-  blocks: Page['layout'] | CartPage['layout']
+export const Blocks: React.FC<{
+  blocks: Page['layout']
   disableTopPadding?: boolean
 }> = (props) => {
   const {
@@ -85,5 +85,3 @@ const Blocks: React.FC<{
 
   return null;
 };
-
-export default Blocks;

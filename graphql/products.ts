@@ -27,6 +27,12 @@ export const PRODUCT = gql`
           ${MEDIA_BLOCK}
           ${ARCHIVE_BLOCK}
         }
+        paywall {
+          ${CALL_TO_ACTION}
+          ${CONTENT}
+          ${MEDIA_BLOCK}
+          ${ARCHIVE_BLOCK}
+        }
         priceJSON
         ${META}
       }

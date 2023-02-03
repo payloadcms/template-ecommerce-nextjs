@@ -46,7 +46,6 @@ const Order: React.FC = () => {
       router.push(`/login?unauthorized=account`);
     }
   }, [user, router]);
-  console.log(order);
 
   return (
     <Gutter className={classes.orders}>
