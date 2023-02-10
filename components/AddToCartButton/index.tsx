@@ -1,26 +1,22 @@
-import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import { Product } from '../../payload-types';
-import { useCart } from '../../providers/Cart';
-import { Button, Props } from '../Button';
-import classes from './index.module.scss';
+import React, { useEffect, useState } from 'react'
+
+import { Product } from '../../payload-types'
+import { useCart } from '../../providers/Cart'
+import { Button, Props } from '../Button'
+
+import classes from './index.module.scss'
 
 export const AddToCartButton: React.FC<{
   product: Product
   quantity?: number
   className?: string
   appearance?: Props['appearance']
-}> = (props) => {
-  const {
-    product,
-    quantity = 1,
-    className,
-    appearance = 'primary'
-  } = props;
+}> = props => {
+  const { product, quantity = 1, className, appearance = 'primary' } = props
 
-  const { cart, addItemToCart, isProductInCart } = useCart();
+  const { cart, addItemToCart, isProductInCart } = useCart()
 
-  const [showInCart, setShowInCart] = useState<boolean>();
+  const [showInCart, setShowInCart] = useState<boolean>()
 
   useEffect(() => {
     setShowInCart(isProductInCart(product))
@@ -33,10 +29,7 @@ export const AddToCartButton: React.FC<{
         label="View in cart"
         el="link"
         appearance={appearance}
-        className={[
-          className,
-          classes.addToCartButton
-        ].filter(Boolean).join(' ')}
+        className={[className, classes.addToCartButton].filter(Boolean).join(' ')}
       />
     )
   }
@@ -48,14 +41,11 @@ export const AddToCartButton: React.FC<{
       onClick={() => {
         addItemToCart({
           product,
-          quantity
+          quantity,
         })
       }}
-      className={[
-        className,
-        classes.addToCartButton
-      ].filter(Boolean).join(' ')}
+      className={[className, classes.addToCartButton].filter(Boolean).join(' ')}
       label="Add to cart"
     />
-  );
-};
+  )
+}

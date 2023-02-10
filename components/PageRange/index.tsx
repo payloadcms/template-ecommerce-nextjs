@@ -1,16 +1,17 @@
-import React from 'react';
-import classes from './index.module.scss';
+import React from 'react'
+
+import classes from './index.module.scss'
 
 const defaultLabels = {
   singular: 'Doc',
-  plural: 'Docs'
+  plural: 'Docs',
 }
 
 const defaultCollectionLabels = {
   products: {
     singular: 'Product',
-    plural: 'Products'
-  }
+    plural: 'Products',
+  },
 }
 
 export const PageRange: React.FC<{
@@ -23,38 +24,29 @@ export const PageRange: React.FC<{
     singular?: string
     plural?: string
   }
-}> = (props) => {
+}> = props => {
   const {
     className,
     totalDocs,
     currentPage,
     collection,
     limit,
-    collectionLabels: collectionLabelsFromProps
-  } = props;
+    collectionLabels: collectionLabelsFromProps,
+  } = props
 
-  const indexStart = (currentPage ? currentPage - 1 : 1) * (limit || 1) + 1;
-  let indexEnd = (currentPage || 1) * (limit || 1);
-  if (totalDocs && indexEnd > totalDocs) indexEnd = totalDocs;
+  const indexStart = (currentPage ? currentPage - 1 : 1) * (limit || 1) + 1
+  let indexEnd = (currentPage || 1) * (limit || 1)
+  if (totalDocs && indexEnd > totalDocs) indexEnd = totalDocs
 
-  const {
-    singular,
-    plural
-  } = collectionLabelsFromProps || defaultCollectionLabels[collection] || defaultLabels || {};
+  const { singular, plural } =
+    collectionLabelsFromProps || defaultCollectionLabels[collection] || defaultLabels || {}
 
   return (
-    <div
-      className={[
-        className,
-        classes.pageRange
-      ].filter(Boolean).join(' ')}
-    >
-      {typeof totalDocs === 'undefined' || totalDocs === 0 && (
-        'Search produced no results'
-      )}
-      {typeof totalDocs !== 'undefined' && totalDocs > 0 && (
-        `Showing ${indexStart} - ${indexEnd} of ${totalDocs} ${totalDocs > 1 ? plural : singular}`
-      )}
+    <div className={[className, classes.pageRange].filter(Boolean).join(' ')}>
+      {typeof totalDocs === 'undefined' || (totalDocs === 0 && 'Search produced no results')}
+      {typeof totalDocs !== 'undefined' &&
+        totalDocs > 0 &&
+        `Showing ${indexStart} - ${indexEnd} of ${totalDocs} ${totalDocs > 1 ? plural : singular}`}
     </div>
   )
 }

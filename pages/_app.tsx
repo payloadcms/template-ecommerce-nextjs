@@ -1,17 +1,18 @@
-import { AppProps } from 'next/app';
-import { GridProvider } from '@faceless-ui/css-grid';
-import { ModalContainer, ModalProvider } from '@faceless-ui/modal';
-import React, { useCallback } from 'react';
-import { Header as HeaderType, Footer as FooterType } from '../payload-types';
-import cssVariables from '../cssVariables';
-import { AdminBar } from '../components/AdminBar';
-import { AuthProvider } from '../providers/Auth';
-import { useRouter } from 'next/router';
-import { Header } from '../components/Header';
-import { CartProvider } from '../providers/Cart';
-import { Footer } from '../components/Footer';
+import React, { useCallback } from 'react'
+import { GridProvider } from '@faceless-ui/css-grid'
+import { ModalContainer, ModalProvider } from '@faceless-ui/modal'
+import { AppProps } from 'next/app'
+import { useRouter } from 'next/router'
 
-import '../css/app.scss';
+import { AdminBar } from '../components/AdminBar'
+import { Footer } from '../components/Footer'
+import { Header } from '../components/Header'
+import cssVariables from '../cssVariables'
+import { Footer as FooterType, Header as HeaderType } from '../payload-types'
+import { AuthProvider } from '../providers/Auth'
+import { CartProvider } from '../providers/Cart'
+
+import '../css/app.scss'
 
 const PayloadApp = (
   appProps: AppProps<{
@@ -20,29 +21,22 @@ const PayloadApp = (
     collection: string
     header: HeaderType
     footer: FooterType
-  }>
+  }>,
 ): React.ReactElement => {
-  const {
-    Component,
-    pageProps,
-  } = appProps;
+  const { Component, pageProps } = appProps
 
-  const {
-    collection,
-    id,
-    preview,
-  } = pageProps;
+  const { collection, id, preview } = pageProps
 
-  const router = useRouter();
+  const router = useRouter()
 
   const onPreviewExit = useCallback(() => {
     const exit = async () => {
-      const exitReq = await fetch('/api/exit-preview');
+      const exitReq = await fetch('/api/exit-preview')
       if (exitReq.status === 200) {
-        router.reload();
+        router.reload()
       }
     }
-    exit();
+    exit()
   }, [router])
 
   return (

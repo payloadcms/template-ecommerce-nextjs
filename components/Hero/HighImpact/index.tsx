@@ -1,12 +1,13 @@
-import { Cell, Grid } from '@faceless-ui/css-grid';
-import React, { Fragment } from 'react';
-import { Page } from '../../../payload-types';
-import { Gutter } from '../../Gutter';
-import { CMSLink } from '../../Link';
-import { Media } from '../../Media';
-import RichText from '../../RichText';
+import React, { Fragment } from 'react'
+import { Cell, Grid } from '@faceless-ui/css-grid'
 
-import classes from './index.module.scss';
+import { Page } from '../../../payload-types'
+import { Gutter } from '../../Gutter'
+import { CMSLink } from '../../Link'
+import { Media } from '../../Media'
+import RichText from '../../RichText'
+
+import classes from './index.module.scss'
 
 export const HighImpactHero: React.FC<Page['hero']> = ({ richText, media, links }) => {
   return (
@@ -35,12 +36,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ richText, media, links 
               // fill
               imgClassName={classes.image}
             />
-            {media?.caption && (
-              <RichText
-                content={media.caption}
-                className={classes.caption}
-              />
-            )}
+            {media?.caption && <RichText content={media.caption} className={classes.caption} />}
           </Fragment>
         )}
       </div>

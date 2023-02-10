@@ -1,7 +1,9 @@
-import Link from 'next/link';
-import React, { ElementType } from 'react';
-import { useBackgroundColor } from '../BackgroundColor';
-import classes from './index.module.scss';
+import React, { ElementType } from 'react'
+import Link from 'next/link'
+
+import { useBackgroundColor } from '../BackgroundColor'
+
+import classes from './index.module.scss'
 
 export type Props = {
   label: string
@@ -24,43 +26,39 @@ export const Button: React.FC<Props> = ({
   className: classNameFromProps,
   onClick,
   type = 'button',
-  disabled
+  disabled,
 }) => {
-  let el = elFromProps;
-  const backgroundColor = useBackgroundColor();
-  const newTabProps = newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+  let el = elFromProps
+  const backgroundColor = useBackgroundColor()
+  const newTabProps = newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {}
   const className = [
     classes.button,
     classNameFromProps,
     classes[`appearance--${appearance}`],
-    classes[`${appearance}--${backgroundColor}`
-  ], classes.button].filter(Boolean).join(' ');
+    classes[`${appearance}--${backgroundColor}`],
+    classes.button,
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   const content = (
     <div className={classes.content}>
       {/* <Chevron /> */}
-      <span className={classes.label}>
-        {label}
-      </span>
+      <span className={classes.label}>{label}</span>
     </div>
   )
 
-  if (onClick || type === 'submit') el = 'button';
+  if (onClick || type === 'submit') el = 'button'
 
   if (el === 'link') {
     return (
-      <Link
-        href={href}
-        className={className}
-        {...newTabProps}
-        onClick={onClick}
-      >
+      <Link href={href} className={className} {...newTabProps} onClick={onClick}>
         {content}
       </Link>
     )
   }
 
-  const Element: ElementType = el;
+  const Element: ElementType = el
 
   return (
     <Element

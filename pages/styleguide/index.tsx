@@ -1,6 +1,7 @@
+import React from 'react'
 import { gql } from '@apollo/client'
 import { GetStaticProps } from 'next'
-import React from 'react'
+
 import { Gutter } from '../../components/Gutter'
 import { getApolloClient } from '../../graphql'
 import { FOOTER, HEADER, SETTINGS } from '../../graphql/globals'
@@ -27,17 +28,17 @@ const Typography: React.FC = () => {
         incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
       </h6>
       <p>
-        P: Lorem ipsum dolor sit amet, consectetur adipiscing elit consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. dolore magna aliqua.
-        Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem
-        ipsum doalor sit amet in culpa qui officia deserunt consectetur adipiscing elit.
+        P: Lorem ipsum dolor sit amet, consectetur adipiscing elit consectetur adipiscing elit, sed
+        do eiusmod tempor incididunt ut labore et dolore magna aliqua. dolore magna aliqua. Quis
+        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum
+        doalor sit amet in culpa qui officia deserunt consectetur adipiscing elit.
       </p>
     </Gutter>
   )
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const apolloClient = getApolloClient();
+export const getStaticProps: GetStaticProps = async () => {
+  const apolloClient = getApolloClient()
 
   const { data } = await apolloClient.query({
     query: gql(`
@@ -46,15 +47,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         ${FOOTER}
         ${SETTINGS}
       }
-    `)
-  });
+    `),
+  })
 
   return {
     props: {
       header: data?.Header || null,
       footer: data?.Footer || null,
     },
-  };
+  }
 }
 
-export default Typography;
+export default Typography

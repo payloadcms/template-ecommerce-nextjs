@@ -1,98 +1,89 @@
-import React, { Fragment } from 'react';
-import { Page } from '../../payload-types';
-import { toKebabCase } from '../../utilities/toKebabCase';
-import { BackgroundColor } from '../BackgroundColor';
-import { VerticalPadding, VerticalPaddingOptions } from '../VerticalPadding';
-import { ArchiveBlock } from '../../blocks/ArchiveBlock';
-import { CallToActionBlock } from '../../blocks/CallToAction';
-import { ContentBlock } from '../../blocks/Content';
-import { MediaBlock } from '../../blocks/MediaBlock';
+import React, { Fragment } from 'react'
+
+import { ArchiveBlock } from '../../blocks/ArchiveBlock'
+import { CallToActionBlock } from '../../blocks/CallToAction'
+import { ContentBlock } from '../../blocks/Content'
+import { MediaBlock } from '../../blocks/MediaBlock'
+import { Page } from '../../payload-types'
+import { toKebabCase } from '../../utilities/toKebabCase'
+import { BackgroundColor } from '../BackgroundColor'
+import { VerticalPadding, VerticalPaddingOptions } from '../VerticalPadding'
 
 const blockComponents = {
   cta: CallToActionBlock,
   content: ContentBlock,
   mediaBlock: MediaBlock,
-  archive: ArchiveBlock
+  archive: ArchiveBlock,
 }
 
 export const Blocks: React.FC<{
   blocks: Page['layout']
   disableTopPadding?: boolean
-}> = (props) => {
-  const {
-    disableTopPadding,
-    blocks,
-  } = props;
+}> = props => {
+  const { disableTopPadding, blocks } = props
 
-  const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0;
+  const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
   if (hasBlocks) {
     return (
       <Fragment>
         {blocks.map((block, index) => {
-          const {
-            blockName,
-            blockType,
-          } = block;
+          const { blockName, blockType } = block
 
           if (blockType && blockType in blockComponents) {
-            const Block = blockComponents[blockType];
-            const backgroundColor = 'backgroundColor' in block ? block.backgroundColor : 'white';
-            const prevBlock = blocks[index - 1];
-            const nextBlock = blocks[index + 1];
+            const Block = blockComponents[blockType]
+            const backgroundColor = 'backgroundColor' in block ? block.backgroundColor : 'white'
+            const prevBlock = blocks[index - 1]
+            const nextBlock = blocks[index + 1]
 
-            const prevBlockBackground = prevBlock?.[`${prevBlock.blockType}`]?.backgroundColor || 'white';
-            const nextBlockBackground = nextBlock?.[`${nextBlock.blockType}`]?.backgroundColor || 'white';
+            const prevBlockBackground =
+              prevBlock?.[`${prevBlock.blockType}`]?.backgroundColor || 'white'
+            const nextBlockBackground =
+              nextBlock?.[`${nextBlock.blockType}`]?.backgroundColor || 'white'
 
-            let paddingTop: VerticalPaddingOptions = 'large';
-            let paddingBottom: VerticalPaddingOptions = 'large';
+            let paddingTop: VerticalPaddingOptions = 'large'
+            let paddingBottom: VerticalPaddingOptions = 'large'
 
             if (backgroundColor && backgroundColor === prevBlockBackground) {
-              paddingTop = 'medium';
+              paddingTop = 'medium'
             }
 
             if (backgroundColor && backgroundColor === nextBlockBackground) {
-              paddingBottom = 'medium';
+              paddingBottom = 'medium'
             }
 
             if (index === blocks.length - 1) {
-              paddingBottom = 'large';
+              paddingBottom = 'large'
             }
 
             if (disableTopPadding && index === 0) {
-              paddingTop = 'none';
+              paddingTop = 'none'
             }
 
             if (!disableTopPadding && index === 0) {
-              paddingTop = 'large';
+              paddingTop = 'large'
             }
 
             if (Block) {
               return (
-                <BackgroundColor
-                  key={index}
-                  color={backgroundColor}
-                >
-                  <VerticalPadding
-                    top={paddingTop}
-                    bottom={paddingBottom}
-                  >
-                  {/* @ts-ignore */}
-                  <Block
-                    // @ts-ignore
-                    id={toKebabCase(blockName)}
-                    {...block}
-                  />
+                <BackgroundColor key={index} color={backgroundColor}>
+                  <VerticalPadding top={paddingTop} bottom={paddingBottom}>
+                    {/* @ts-ignore */}
+                    <Block
+                      // @ts-ignore
+                      id={toKebabCase(blockName)}
+                      {...block}
+                    />
                   </VerticalPadding>
                 </BackgroundColor>
-              );
+              )
             }
           }
-          return null;
+          return null
         })}
       </Fragment>
-    );
+    )
   }
 
-  return null;
-};
+  return null
+}

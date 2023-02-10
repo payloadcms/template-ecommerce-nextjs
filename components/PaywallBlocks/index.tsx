@@ -1,26 +1,27 @@
-import React, { useEffect } from 'react';
-import { ARCHIVE_BLOCK, CALL_TO_ACTION, CONTENT, MEDIA_BLOCK } from '../../graphql/blocks';
-import { Page } from '../../payload-types';
-import { useAuth } from '../../providers/Auth';
-import { Blocks } from '../Blocks';
+import React, { useEffect } from 'react'
+
+import { ARCHIVE_BLOCK, CALL_TO_ACTION, CONTENT, MEDIA_BLOCK } from '../../graphql/blocks'
+import { Page } from '../../payload-types'
+import { useAuth } from '../../providers/Auth'
+import { Blocks } from '../Blocks'
 
 export const PaywallBlocks: React.FC<{
-  productSlug: string,
+  productSlug: string
   disableTopPadding?: boolean
-}> = (props) => {
-  const { productSlug, disableTopPadding } = props;
-  const { user } = useAuth();
+}> = props => {
+  const { productSlug, disableTopPadding } = props
+  const { user } = useAuth()
 
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [blocks, setBlocks] = React.useState<Page['layout']>();
-  const hasInitialized = React.useRef(false);
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [blocks, setBlocks] = React.useState<Page['layout']>()
+  const hasInitialized = React.useRef(false)
 
   useEffect(() => {
     if (!user || hasInitialized.current) return
-    hasInitialized.current = true;
+    hasInitialized.current = true
 
     const getPaywallContent = async () => {
-      setIsLoading(true);
+      setIsLoading(true)
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/graphql`, {
         method: 'POST',
@@ -44,25 +45,20 @@ export const PaywallBlocks: React.FC<{
         }),
       })
 
-      const { data } = await res.json();
+      const { data } = await res.json()
       const paywall = data.Products?.docs?.[0]?.paywall
 
       if (paywall) {
-        setBlocks(paywall);
+        setBlocks(paywall)
       }
 
-      setIsLoading(false);
+      setIsLoading(false)
     }
 
-    getPaywallContent();
-  }, [user, productSlug]);
+    getPaywallContent()
+  }, [user, productSlug])
 
-  if (isLoading || !blocks || blocks.length === 0) return null;
+  if (isLoading || !blocks || blocks.length === 0) return null
 
-  return (
-    <Blocks
-      blocks={blocks}
-      disableTopPadding={disableTopPadding}
-    />
-  )
-};
+  return <Blocks blocks={blocks} disableTopPadding={disableTopPadding} />
+}

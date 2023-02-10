@@ -1,28 +1,22 @@
-import React from 'react';
-import { Product } from '../../payload-types';
-import { useCart } from '../../providers/Cart';
-import { Button } from '../Button';
-import classes from './index.module.scss';
+import React from 'react'
+
+import { Product } from '../../payload-types'
+import { useCart } from '../../providers/Cart'
+
+import classes from './index.module.scss'
 
 export const RemoveFromCartButton: React.FC<{
   className?: string
   product: Product
-}> = (props) => {
-  const {
-    className,
-    product
-  } = props;
+}> = props => {
+  const { className, product } = props
 
-  const { deleteItemFromCart, isProductInCart } = useCart();
+  const { deleteItemFromCart, isProductInCart } = useCart()
 
-  const productIsInCart = isProductInCart(product);
+  const productIsInCart = isProductInCart(product)
 
   if (!productIsInCart) {
-    return (
-      <div>
-        Item is not in the cart
-      </div>
-    )
+    return <div>Item is not in the cart</div>
   }
 
   return (
@@ -31,12 +25,9 @@ export const RemoveFromCartButton: React.FC<{
       onClick={() => {
         deleteItemFromCart(product)
       }}
-      className={[
-        className,
-        classes.removeFromCartButton
-      ].filter(Boolean).join(' ')}
+      className={[className, classes.removeFromCartButton].filter(Boolean).join(' ')}
     >
       Remove from cart
     </button>
-  );
-};
+  )
+}

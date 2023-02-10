@@ -1,21 +1,17 @@
-import React, { useState } from 'react';
-import { PayloadMeUser, PayloadAdminBarProps, PayloadAdminBar } from 'payload-admin-bar';
-import { Gutter } from '../Gutter';
-import classes from './index.module.scss'
-import { useAuth } from '../../providers/Auth';
+import React from 'react'
+import { PayloadAdminBar, PayloadAdminBarProps } from 'payload-admin-bar'
 
-const Title: React.FC = () => (
-  <span>
-    My Store
-  </span>
-)
+import { useAuth } from '../../providers/Auth'
+import { Gutter } from '../Gutter'
+
+import classes from './index.module.scss'
+
+const Title: React.FC = () => <span>My Store</span>
 
 export const AdminBar: React.FC<{
   adminBarProps: PayloadAdminBarProps
-}> = (props) => {
-  const {
-    adminBarProps
-  } = props;
+}> = props => {
+  const { adminBarProps } = props
 
   const { user } = useAuth()
 
@@ -24,13 +20,8 @@ export const AdminBar: React.FC<{
   if (!isAdmin) return null
 
   return (
-    <div
-      className={[
-        classes.adminBar,
-        user && classes.show
-      ].filter(Boolean).join(' ')}
-    >
-      <Gutter className={classes.blockContainer} >
+    <div className={[classes.adminBar, user && classes.show].filter(Boolean).join(' ')}>
+      <Gutter className={classes.blockContainer}>
         <PayloadAdminBar
           {...adminBarProps}
           key={user?.id} // use key to get the admin bar to re-run its `me` request
@@ -46,7 +37,7 @@ export const AdminBar: React.FC<{
             position: 'relative',
             zIndex: 'unset',
             padding: 0,
-            backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
           }}
         />
       </Gutter>

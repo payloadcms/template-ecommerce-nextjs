@@ -1,21 +1,27 @@
-import classes from './index.module.scss';
-import { Fragment, useEffect, useState } from 'react';
-import { Product } from '../../payload-types';
-import Link from 'next/link';
-import { Media } from '../Media';
-import { Price } from '../Price';
+import React, { Fragment, useEffect, useState } from 'react'
+import Link from 'next/link'
+
+import { Product } from '../../payload-types'
+import { Media } from '../Media'
+import { Price } from '../Price'
+
+import classes from './index.module.scss'
 
 const priceFromJSON = (priceJSON): string => {
   let price = ''
 
   if (priceJSON) {
     try {
-      const parsed = JSON.parse(priceJSON)?.data[0];
+      const parsed = JSON.parse(priceJSON)?.data[0]
       const priceValue = parsed.unit_amount
       const priceType = parsed.type
-      price = `${parsed.currency === 'usd' ? '$' : ''}${(priceValue / 100).toFixed(2)}`;
+      price = `${parsed.currency === 'usd' ? '$' : ''}${(priceValue / 100).toFixed(2)}`
       if (priceType === 'recurring') {
-        price += `/${parsed.recurring.interval_count > 1 ? `${parsed.recurring.interval_count} ${parsed.recurring.interval}` : parsed.recurring.interval}`
+        price += `/${
+          parsed.recurring.interval_count > 1
+            ? `${parsed.recurring.interval_count} ${parsed.recurring.interval}`
+            : parsed.recurring.interval
+        }`
       }
     } catch (e) {
       console.error(`Cannot parse priceJSON`)
@@ -33,60 +39,37 @@ export const Card: React.FC<{
   title?: string
   relationTo?: 'products'
   doc?: Product
-}> = (props) => {
+}> = props => {
   const {
     showCategories,
     title: titleFromProps,
     doc,
-    doc: {
-      id,
-      slug,
-      title,
-      categories,
-      meta,
-      priceJSON
-    } = {},
-    className
-  } = props;
+    doc: { slug, title, categories, meta, priceJSON } = {},
+    className,
+  } = props
 
-  const {
-    description,
-    image: metaImage
-  } = meta || {};
+  const { description, image: metaImage } = meta || {}
 
-  const hasCategories = categories && Array.isArray(categories) && categories.length > 0;
-  const titleToUse = titleFromProps || title;
+  const hasCategories = categories && Array.isArray(categories) && categories.length > 0
+  const titleToUse = titleFromProps || title
   const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
-  const href = `/products/${slug}`;
+  const href = `/products/${slug}`
 
-  const [price, setPrice] = useState(() => priceFromJSON(priceJSON))
+  const [
+    price, // eslint-disable-line no-unused-vars
+    setPrice,
+  ] = useState(() => priceFromJSON(priceJSON))
 
   useEffect(() => {
     setPrice(priceFromJSON(priceJSON))
   }, [priceJSON])
 
   return (
-    <div
-      className={[
-        classes.card,
-        className
-      ].filter(Boolean).join(' ')}
-    >
-      <Link
-        href={href}
-        className={classes.mediaWrapper}
-      >
-        {!metaImage && (
-          <div className={classes.placeholder}>
-            No image
-          </div>
-        )}
+    <div className={[classes.card, className].filter(Boolean).join(' ')}>
+      <Link href={href} className={classes.mediaWrapper}>
+        {!metaImage && <div className={classes.placeholder}>No image</div>}
         {metaImage && typeof metaImage !== 'string' && (
-          <Media
-            imgClassName={classes.image}
-            resource={metaImage}
-            fill
-          />
+          <Media imgClassName={classes.image} resource={metaImage} fill />
         )}
       </Link>
       {showCategories && hasCategories && (
@@ -94,23 +77,16 @@ export const Card: React.FC<{
           {showCategories && hasCategories && (
             <div>
               {categories?.map((category, index) => {
-                const {
-                  title: categoryTitle,
-                } = category;
+                const { title: titleFromCategory } = category
 
-                const titleToUse = categoryTitle || 'Untitled category';
+                const categoryTitle = titleFromCategory || 'Untitled category'
 
-                const isLast = index === categories.length - 1;
+                const isLast = index === categories.length - 1
 
                 return (
                   <Fragment key={index}>
-                    {titleToUse}
-                    {!isLast && (
-                      <Fragment>
-                        ,
-                        &nbsp;
-                      </Fragment>
-                    )}
+                    {categoryTitle}
+                    {!isLast && <Fragment>, &nbsp;</Fragment>}
                   </Fragment>
                 )
               })}
@@ -120,18 +96,12 @@ export const Card: React.FC<{
       )}
       {titleToUse && (
         <h4 className={classes.title}>
-          <Link href={href}>
-            {titleToUse}
-          </Link>
+          <Link href={href}>{titleToUse}</Link>
         </h4>
       )}
       {description && (
         <div className={classes.body}>
-          {description && (
-            <p className={classes.description}>
-              {sanitizedDescription}
-            </p>
-          )}
+          {description && <p className={classes.description}>{sanitizedDescription}</p>}
         </div>
       )}
       <Price product={doc} />
