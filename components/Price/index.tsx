@@ -28,7 +28,7 @@ export const priceFromJSON = (priceJSON): string => {
         }`
       }
     } catch (e) {
-      console.error(`Cannot parse priceJSON`)
+      console.error(`Cannot parse priceJSON`) // eslint-disable-line no-console
     }
   }
 

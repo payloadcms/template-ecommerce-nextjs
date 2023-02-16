@@ -1,3 +1,3 @@
 module.exports = {
-  extends: ['./eslint-config'],
+  extends: ['plugin:@next/next/recommended', '@payloadcms'],
 }
