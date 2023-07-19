@@ -33,12 +33,17 @@ First, get your environment setup:
      NEXT_PUBLIC_CMS_URL=http://localhost:8000
    ```
 
-First, run the development server:
+First, install and run the development server:
 
 ```bash
+npm i
 npm run dev
 # or
+yarn
 yarn dev
+# or
+pnpm i
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
